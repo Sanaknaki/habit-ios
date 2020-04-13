@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>394081793970-ahhli968qors3e93aqv75t6pclu1n94q.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.394081793970-ahhli968qors3e93aqv75t6pclu1n94q</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBY9a29C6eUwRszMQj_RLeRvqeoEcku4no</string>
+	<key>GCM_SENDER_ID</key>
+	<string>394081793970</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.sanaknaki.Theday</string>
+	<key>PROJECT_ID</key>
+	<string>theday-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>theday-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:394081793970:ios:a5dfaff8ac9f6fa70896ab</string>
+	<key>DATABASE_URL</key>
+	<string>https://theday-app.firebaseio.com</string>
+</dict>
+</plist>

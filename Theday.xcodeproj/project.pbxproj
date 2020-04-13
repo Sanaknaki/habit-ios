@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,9 +13,15 @@
 		23DF72542442C1DE0050A7D3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23DF72522442C1DE0050A7D3 /* Main.storyboard */; };
 		23DF72562442C1E50050A7D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23DF72552442C1E50050A7D3 /* Assets.xcassets */; };
 		23DF72592442C1E50050A7D3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23DF72572442C1E50050A7D3 /* LaunchScreen.storyboard */; };
+		23DF72612442C5AE0050A7D3 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DF72602442C5AE0050A7D3 /* MainTabBarController.swift */; };
+		23DF72632443DEF50050A7D3 /* TimelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DF72622443DEF50050A7D3 /* TimelineViewController.swift */; };
+		23DF72662443DF5D0050A7D3 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DF72652443DF5D0050A7D3 /* Extensions.swift */; };
+		23DF72682443E0410050A7D3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 23DF72672443E0410050A7D3 /* GoogleService-Info.plist */; };
+		8AE3953715AD063C364528F3 /* Pods_Theday.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92F1740BD9A57EB9BB4C0BF8 /* Pods_Theday.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		064BC0392DCF5C2725763459 /* Pods-Theday.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Theday.release.xcconfig"; path = "Target Support Files/Pods-Theday/Pods-Theday.release.xcconfig"; sourceTree = "<group>"; };
 		23DF72492442C1DE0050A7D3 /* Theday.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Theday.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		23DF724C2442C1DE0050A7D3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		23DF724E2442C1DE0050A7D3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -24,6 +30,12 @@
 		23DF72552442C1E50050A7D3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		23DF72582442C1E50050A7D3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		23DF725A2442C1E50050A7D3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		23DF72602442C5AE0050A7D3 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
+		23DF72622443DEF50050A7D3 /* TimelineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineViewController.swift; sourceTree = "<group>"; };
+		23DF72652443DF5D0050A7D3 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		23DF72672443E0410050A7D3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		7996B9AE351E5804876FDD38 /* Pods-Theday.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Theday.debug.xcconfig"; path = "Target Support Files/Pods-Theday/Pods-Theday.debug.xcconfig"; sourceTree = "<group>"; };
+		92F1740BD9A57EB9BB4C0BF8 /* Pods_Theday.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Theday.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +43,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8AE3953715AD063C364528F3 /* Pods_Theday.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -42,6 +55,8 @@
 			children = (
 				23DF724B2442C1DE0050A7D3 /* Theday */,
 				23DF724A2442C1DE0050A7D3 /* Products */,
+				6D8D875F9E0EDCD08AC18629 /* Pods */,
+				95E77F5BE01C61336EB6299B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -56,6 +71,7 @@
 		23DF724B2442C1DE0050A7D3 /* Theday */ = {
 			isa = PBXGroup;
 			children = (
+				23DF72642443DF520050A7D3 /* Utils */,
 				23DF724C2442C1DE0050A7D3 /* AppDelegate.swift */,
 				23DF724E2442C1DE0050A7D3 /* SceneDelegate.swift */,
 				23DF72502442C1DE0050A7D3 /* ViewController.swift */,
@@ -63,8 +79,36 @@
 				23DF72552442C1E50050A7D3 /* Assets.xcassets */,
 				23DF72572442C1E50050A7D3 /* LaunchScreen.storyboard */,
 				23DF725A2442C1E50050A7D3 /* Info.plist */,
+				23DF72672443E0410050A7D3 /* GoogleService-Info.plist */,
+				23DF72602442C5AE0050A7D3 /* MainTabBarController.swift */,
+				23DF72622443DEF50050A7D3 /* TimelineViewController.swift */,
 			);
 			path = Theday;
+			sourceTree = "<group>";
+		};
+		23DF72642443DF520050A7D3 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				23DF72652443DF5D0050A7D3 /* Extensions.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		6D8D875F9E0EDCD08AC18629 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				7996B9AE351E5804876FDD38 /* Pods-Theday.debug.xcconfig */,
+				064BC0392DCF5C2725763459 /* Pods-Theday.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		95E77F5BE01C61336EB6299B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				92F1740BD9A57EB9BB4C0BF8 /* Pods_Theday.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -74,9 +118,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 23DF725D2442C1E50050A7D3 /* Build configuration list for PBXNativeTarget "Theday" */;
 			buildPhases = (
+				8AD4E2DF9F284C4F604DA262 /* [CP] Check Pods Manifest.lock */,
 				23DF72452442C1DE0050A7D3 /* Sources */,
 				23DF72462442C1DE0050A7D3 /* Frameworks */,
 				23DF72472442C1DE0050A7D3 /* Resources */,
+				177FFC56626E1BAC638CDC74 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -126,6 +172,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				23DF72592442C1E50050A7D3 /* LaunchScreen.storyboard in Resources */,
+				23DF72682443E0410050A7D3 /* GoogleService-Info.plist in Resources */,
 				23DF72562442C1E50050A7D3 /* Assets.xcassets in Resources */,
 				23DF72542442C1DE0050A7D3 /* Main.storyboard in Resources */,
 			);
@@ -133,14 +180,59 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		177FFC56626E1BAC638CDC74 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Theday/Pods-Theday-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Theday/Pods-Theday-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Theday/Pods-Theday-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8AD4E2DF9F284C4F604DA262 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Theday-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		23DF72452442C1DE0050A7D3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				23DF72512442C1DE0050A7D3 /* ViewController.swift in Sources */,
+				23DF72662443DF5D0050A7D3 /* Extensions.swift in Sources */,
 				23DF724D2442C1DE0050A7D3 /* AppDelegate.swift in Sources */,
+				23DF72612442C5AE0050A7D3 /* MainTabBarController.swift in Sources */,
 				23DF724F2442C1DE0050A7D3 /* SceneDelegate.swift in Sources */,
+				23DF72632443DEF50050A7D3 /* TimelineViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -282,6 +374,7 @@
 		};
 		23DF725E2442C1E50050A7D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7996B9AE351E5804876FDD38 /* Pods-Theday.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -300,6 +393,7 @@
 		};
 		23DF725F2442C1E50050A7D3 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 064BC0392DCF5C2725763459 /* Pods-Theday.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
