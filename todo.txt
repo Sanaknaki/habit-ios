@@ -1,0 +1,10 @@
+[X] Sign Up Screen re-design.
+[X] Sign Up Screen text field styling + functionality.
+[X] Sign Up Screen error message handling.
+
+[X] Let user send post to DB, store it appropriately.
+[X] Retrieve posts from user to show on their profile.
+[X] When clicking a post, make it expand to full screen.
+
+[] Ability to like a post.
+[] Show that you liked a post.
