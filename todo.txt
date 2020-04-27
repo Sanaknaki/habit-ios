@@ -14,3 +14,5 @@
 
 [] Ability to like a post.
 [] Show that you liked a post.
+
+💻 New splash + login/signup screen.

@@ -102,8 +102,8 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
                 try Auth.auth().signOut()
 
                 // Want to wrap the login view controller in navControl to not push the registration view onto the stack
-                let loginController = LoginViewController()
-                let navController = UINavigationController(rootViewController: loginController)
+                let loginOrSignupScreen = LoginOrSignUpScreen()
+                let navController = UINavigationController(rootViewController: loginOrSignupScreen)
                 navController.modalPresentationStyle = .fullScreen
                 self.present(navController, animated: true, completion: nil)
             } catch let signOutErr {
