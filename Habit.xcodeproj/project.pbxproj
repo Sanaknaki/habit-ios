@@ -19,6 +19,9 @@
 		2332F6852450A3C200BCBE1B /* FirebaseExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2332F6842450A3C200BCBE1B /* FirebaseExtensions.swift */; };
 		2332F6872450A60800BCBE1B /* CustomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2332F6862450A60800BCBE1B /* CustomImageView.swift */; };
 		2332F68A2450B61000BCBE1B /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2332F6892450B60F00BCBE1B /* PostViewController.swift */; };
+		234AAFF324533539009400C0 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234AAFF224533539009400C0 /* SearchViewController.swift */; };
+		234AAFF524533597009400C0 /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234AAFF424533597009400C0 /* SearchResultCell.swift */; };
+		234AAFFB245635AF009400C0 /* LoginOrSignUpScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234AAFFA245635AF009400C0 /* LoginOrSignUpScreen.swift */; };
 		23DF724D2442C1DE0050A7D3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DF724C2442C1DE0050A7D3 /* AppDelegate.swift */; };
 		23DF724F2442C1DE0050A7D3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DF724E2442C1DE0050A7D3 /* SceneDelegate.swift */; };
 		23DF72512442C1DE0050A7D3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DF72502442C1DE0050A7D3 /* ViewController.swift */; };
@@ -53,6 +56,9 @@
 		2332F6842450A3C200BCBE1B /* FirebaseExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseExtensions.swift; sourceTree = "<group>"; };
 		2332F6862450A60800BCBE1B /* CustomImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImageView.swift; sourceTree = "<group>"; };
 		2332F6892450B60F00BCBE1B /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
+		234AAFF224533539009400C0 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		234AAFF424533597009400C0 /* SearchResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
+		234AAFFA245635AF009400C0 /* LoginOrSignUpScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginOrSignUpScreen.swift; sourceTree = "<group>"; };
 		23DF72492442C1DE0050A7D3 /* Habit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Habit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		23DF724C2442C1DE0050A7D3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		23DF724E2442C1DE0050A7D3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -118,6 +124,25 @@
 			path = Post;
 			sourceTree = "<group>";
 		};
+		234AAFF1245333BA009400C0 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				234AAFF224533539009400C0 /* SearchViewController.swift */,
+				234AAFF424533597009400C0 /* SearchResultCell.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		234AAFF924563594009400C0 /* LoginSignup */ = {
+			isa = PBXGroup;
+			children = (
+				23DF72752444BEB00050A7D3 /* Signup */,
+				23DF72742444BEAB0050A7D3 /* Login */,
+				234AAFFA245635AF009400C0 /* LoginOrSignUpScreen.swift */,
+			);
+			path = LoginSignup;
+			sourceTree = "<group>";
+		};
 		23DF72402442C1DE0050A7D3 = {
 			isa = PBXGroup;
 			children = (
@@ -139,13 +164,13 @@
 		23DF724B2442C1DE0050A7D3 /* Habit */ = {
 			isa = PBXGroup;
 			children = (
-				2332F6882450B5FF00BCBE1B /* Post */,
-				2332F67F2450A28500BCBE1B /* Model */,
-				23DF72752444BEB00050A7D3 /* Signup */,
-				23DF72742444BEAB0050A7D3 /* Login */,
-				23DF7271244409A90050A7D3 /* PhotoSelector */,
 				2332F676244F617300BCBE1B /* Camera */,
+				234AAFF924563594009400C0 /* LoginSignup */,
+				2332F67F2450A28500BCBE1B /* Model */,
+				23DF7271244409A90050A7D3 /* PhotoSelector */,
+				2332F6882450B5FF00BCBE1B /* Post */,
 				23DF726E2443FBD80050A7D3 /* Profile */,
+				234AAFF1245333BA009400C0 /* Search */,
 				23DF726B2443E9A70050A7D3 /* Timeline */,
 				23DF72642443DF520050A7D3 /* Utils */,
 				23DF724C2442C1DE0050A7D3 /* AppDelegate.swift */,
@@ -359,9 +384,12 @@
 				2332F68A2450B61000BCBE1B /* PostViewController.swift in Sources */,
 				23DF72792444BED80050A7D3 /* SignupViewController.swift in Sources */,
 				23DF724D2442C1DE0050A7D3 /* AppDelegate.swift in Sources */,
+				234AAFF524533597009400C0 /* SearchResultCell.swift in Sources */,
 				2332F67C244F729400BCBE1B /* CustomAnimationPresentor.swift in Sources */,
+				234AAFF324533539009400C0 /* SearchViewController.swift in Sources */,
 				2332F67A244F680D00BCBE1B /* PreviewPhotoContainer.swift in Sources */,
 				2332F67E244F72B000BCBE1B /* CustomAnimationDismisser.swift in Sources */,
+				234AAFFB245635AF009400C0 /* LoginOrSignUpScreen.swift in Sources */,
 				23DF7286244634ED0050A7D3 /* LoginSignUpInputTextField.swift in Sources */,
 				2332F6852450A3C200BCBE1B /* FirebaseExtensions.swift in Sources */,
 				23DF727324441F500050A7D3 /* PhotoSelectorController.swift in Sources */,

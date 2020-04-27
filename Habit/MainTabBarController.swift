@@ -19,7 +19,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
         // Check if there's a user logged in, show login view
         if(Auth.auth().currentUser == nil) {
             DispatchQueue.main.async {
-                let loginViewController = LoginViewController()
+                let loginViewController = LoginOrSignUpScreen()
                 let navController = UINavigationController(rootViewController: loginViewController)
                 navController.modalPresentationStyle = .fullScreen
                 self.present(navController, animated:true, completion: nil)
@@ -57,7 +57,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
     func setupViewControllers() {
         
         // Home
-        let homeNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "home").withRenderingMode(.alwaysOriginal), selectedImage: #imageLiteral(resourceName: "home-clicked").withRenderingMode(.alwaysOriginal), rootViewController: TimelineViewController(collectionViewLayout: UICollectionViewFlowLayout()))
+        let timelineNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "home").withRenderingMode(.alwaysOriginal), selectedImage: #imageLiteral(resourceName: "home-clicked").withRenderingMode(.alwaysOriginal), rootViewController: TimelineViewController(collectionViewLayout: UICollectionViewFlowLayout()))
         
         // Add
         let captureNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "capture").withRenderingMode(.alwaysOriginal), selectedImage: #imageLiteral(resourceName: "capture").withRenderingMode(.alwaysOriginal), rootViewController: UICollectionViewController(collectionViewLayout: UICollectionViewFlowLayout()))
@@ -70,7 +70,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
         tabBar.backgroundColor = .white
         
         // Takes in an array of Nav Controllers, that show their respective ViewController
-        viewControllers = [homeNavController,
+        viewControllers = [timelineNavController,
                            captureNavController,
                            exploreNavController]
         

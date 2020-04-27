@@ -16,16 +16,117 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
     
     var userId: String?
     
+    lazy var followFollowingButton: UIButton = {
+        let button = UIButton(type: .custom)
+        
+        button.titleLabel?.isHidden = true
+
+        button.addTarget(self, action: #selector(handleFollowFollowing), for: .touchUpInside)
+        return button
+    }()
+    
+    @objc func handleFollowFollowing() {
+        guard let currentLoggedInUserId = Auth.auth().currentUser?.uid else { return } // You
+        guard let userId = userId else { return } // User you about to follow/unfollow
+        
+        let refFollowing = Database.database().reference().child("following").child(currentLoggedInUserId) // Get list of people you following
+        let refFollowers = Database.database().reference().child("followers").child(userId) // Get list of people that user has following them
+        
+        guard let image = followFollowingButton.image(for: .normal) else { return }
+        let imageOfButtonYouClick = image.pngData()
+        let imageOfFollowingButton = #imageLiteral(resourceName: "following").pngData()
+        
+        if imageOfButtonYouClick == imageOfFollowingButton {
+            // Remove (nodeOfUser) in (userLoggedInID) { (nodeOfUser) }
+            refFollowing.removeValue { (err, ref) in
+                if let err = err {
+                    print("Failed to unfollow user: ", err)
+                    return
+                }
+                
+                print("Successfully unfollowed user: ", self.user?.username ?? "")
+            }
+            
+            // Remove (userLoggedInID) in (nodeOfUser) { (userLoggedInID) }
+            refFollowers.removeValue { (err, ref) in
+                if let err = err {
+                    print("Failed to remove follower for user: ", err)
+                    return
+                }
+                
+                print("Successfully lost a follower ", self.user?.username ?? "")
+            }
+            
+            followFollowingButton.setImage(#imageLiteral(resourceName: "follow"), for: .normal)
+        } else {
+            // Follow
+            let followingValues = [userId: 1]
+            refFollowing.updateChildValues(followingValues) { (err, ref) in
+                if let err = err {
+                    print("Failed to follow user: ", err)
+                    return
+                }
+                
+                print("Successfully followed user: ", self.user?.username ?? "")
+            }
+            
+            let followerValues = [currentLoggedInUserId: 1]
+            refFollowers.updateChildValues(followerValues) { (err, ref) in
+                if let err = err {
+                    print("Failed to add to users followers list: ", err)
+                    return
+                }
+                
+                print(currentLoggedInUserId + " has successfully added follower to this user " + userId)
+            }
+            
+            followFollowingButton.setImage(#imageLiteral(resourceName: "following"), for: .normal)
+        }
+    }
+    
+    lazy var signOutBarButton: UIButton = {
+        let button = UIButton(type: .custom)
+        
+        button.setTitle("Sign Out", for: .normal)
+        button.setTitleColor(.mainBlue(), for: .normal)
+        button.addTarget(self, action: #selector(handleSignOut), for: .touchUpInside)
+        
+        return button
+    }()
+    
+    @objc func handleSignOut() {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+
+        alertController.addAction(UIAlertAction(title: "Sign Out", style: .destructive, handler: { (_) in
+            do {
+                try Auth.auth().signOut()
+
+                // Want to wrap the login view controller in navControl to not push the registration view onto the stack
+                let loginController = LoginViewController()
+                let navController = UINavigationController(rootViewController: loginController)
+                navController.modalPresentationStyle = .fullScreen
+                self.present(navController, animated: true, completion: nil)
+            } catch let signOutErr {
+                print("Failed to sign out: ", signOutErr)
+            }
+        }))
+
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alertController.modalPresentationStyle = .fullScreen
+        present(alertController, animated: true, completion: nil)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.navigationController?.navigationBar.shadowImage = UIImage()
-//        self.navigationController?.view.backgroundColor = .white
         
         collectionView.backgroundColor = .white
         collectionView.register(ProfileViewHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
         collectionView.register(ProfileViewPostCell.self, forCellWithReuseIdentifier: cellId)
         setupNavigationBar()
+        
+        collectionView.alwaysBounceVertical = true
         
         fetchUser()
     }
@@ -47,15 +148,38 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
             self.paginatePosts()
         }
     }
-    
-    fileprivate func setupNavigationBar() {
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "profile-clicked").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleLeaveProfile))
+        
+    func setupNavigationBar() {
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "back").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleBackClick))
+        navigationItem.setHidesBackButton(true, animated: false)
+        
+        guard let currentLoggedInUserId = Auth.auth().currentUser?.uid else { return } // You
+        guard let userId = userId else { return } // User profile who you're on
+        
+        if currentLoggedInUserId == userId { // If you're on your own page
+            navigationItem.rightBarButtonItem = UIBarButtonItem(customView: signOutBarButton)
+        } else {
+            // Check if following
+            let ref = Database.database().reference().child("following").child(currentLoggedInUserId)
+            ref.child(userId).observeSingleEvent(of: .value, with: { (snapshot) in
+                if let isFollowing = snapshot.value as? Int, isFollowing == 1 {
+                    self.followFollowingButton.setImage(#imageLiteral(resourceName: "following"), for: .normal)
+                    self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.followFollowingButton)
+                } else {
+                    self.followFollowingButton.setImage(#imageLiteral(resourceName: "follow"), for: .normal)
+                    self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.followFollowingButton)
+                }
+            }, withCancel: { (err) in
+                print("Failed to check if following: ", err)
+            })
+            
+        }
     }
-
-    @objc func handleLeaveProfile() {
+    
+    @objc func handleBackClick() {
         navigationController?.popViewController(animated: true)
     }
-
+    
     // Render out the size of the header section
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: view.frame.width, height: 200)
@@ -69,17 +193,28 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
         
         header.usernameLabel.text = user?.username
         
+        let joinedDate = user?.joinedDate.timeAgoDisplay(userDate: true) ?? ""
+        
+        let attributedText = NSMutableAttributedString(string: joinedDate + "\n", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.black])
+        attributedText.append(NSAttributedString(string: "0 followers", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.black]))
+        
+        header.userStatsLabel.attributedText = attributedText
+        
         return header
     }
 
+    // Up/Down spacing
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return posts.count
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = ((view.frame.width) / 2)
-        let height = ((view.frame.height) / 3)
+        let width = ((view.frame.width))
+        let height = ((view.frame.height) / 6)
         
         return CGSize(width: width, height: height)
     }

@@ -23,14 +23,6 @@ class ProfileViewHeader: UICollectionViewCell {
     let userStatsLabel: UILabel = {
         let label = UILabel()
         
-        // label.a
-        
-        let attributedText = NSMutableAttributedString(string: "47 days\n", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.black])
-        
-        attributedText.append(NSAttributedString(string: "9373 followers", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.black]))
-    
-        label.attributedText = attributedText
-        
         label.numberOfLines = 0
         label.textAlignment = .right
         

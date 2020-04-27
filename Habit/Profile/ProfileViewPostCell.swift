@@ -23,7 +23,7 @@ class ProfileViewPostCell: UICollectionViewCell {
             // Load creted date for the post
             let attributedText = NSMutableAttributedString(string: username + "\n", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 15), NSAttributedString.Key.foregroundColor: UIColor.white])
             
-            attributedText.append(NSAttributedString(string: createdDate.timeAgoDisplay(), attributes: [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12)]))
+            attributedText.append(NSAttributedString(string: createdDate.timeAgoDisplay(userDate: false), attributes: [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12)]))
             
             userNameAndTimestampLabel.attributedText = attributedText
         }
@@ -48,7 +48,6 @@ class ProfileViewPostCell: UICollectionViewCell {
         iv.backgroundColor = UIColor.lightGray
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
-        iv.layer.cornerRadius = 10
         
         return iv
     }()

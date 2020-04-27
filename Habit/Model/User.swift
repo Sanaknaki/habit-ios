@@ -12,10 +12,14 @@ import Foundation
 struct User {
     let uid: String
     let username: String
+    let joinedDate: Date
     
     init(uid: String, dict: [String: Any]) {
         self.uid = uid
         self.username = dict["username"] as? String ?? ""
+        
+        let secondsFrom1970 = dict["joined_date"] as? Double ?? 0
+        self.joinedDate = Date(timeIntervalSince1970: secondsFrom1970)
     }
 }
 

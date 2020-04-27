@@ -11,17 +11,14 @@ import Firebase
 
 class SignupViewController: UIViewController {
     
-    let logoImageView: UIView = {
-        let view = UIView()
+    let signupLabel: UILabel = {
+        let label = UILabel()
         
-        let logoImageView = UIImageView(image: #imageLiteral(resourceName: "icon").withRenderingMode(.alwaysOriginal))
-        logoImageView.contentMode = .scaleAspectFill
-    
-        view.addSubview(logoImageView)
-        logoImageView.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 30, height: 60)
-        logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        
-        return view
+        label.text = "Sign Up"
+        label.textColor = .mainBlue()
+        label.font = UIFont.boldSystemFont(ofSize: 22)
+         
+        return label
     }()
     
     let usernameView: UIView = {
@@ -35,7 +32,7 @@ class SignupViewController: UIViewController {
         
         lbl.text = "Username"
         
-        lbl.textColor = .black
+        lbl.textColor = .mainGray()
         lbl.font = UIFont.systemFont(ofSize: 14)
         
         return lbl
@@ -60,7 +57,7 @@ class SignupViewController: UIViewController {
         
         lbl.text = "Email"
         
-        lbl.textColor = .black
+        lbl.textColor = .mainGray()
         lbl.font = UIFont.systemFont(ofSize: 14)
         
         return lbl
@@ -87,7 +84,7 @@ class SignupViewController: UIViewController {
         
         lbl.text = "Password"
         
-        lbl.textColor = .black
+        lbl.textColor = .mainGray()
         lbl.font = UIFont.systemFont(ofSize: 14)
         
         return lbl
@@ -114,7 +111,7 @@ class SignupViewController: UIViewController {
         
         lbl.text = "Retype Password"
         
-        lbl.textColor = .black
+        lbl.textColor = .mainGray()
         lbl.font = UIFont.systemFont(ofSize: 14)
         
         return lbl
@@ -184,7 +181,7 @@ class SignupViewController: UIViewController {
                 
                 guard let uid = user?.user.uid else { return }
                 
-                let dictValues = ["username": usernameText]
+                let dictValues = ["username": usernameText, "joined_date": Date().timeIntervalSince1970] as [String: Any]
                 
                 // Tree is {users: {uid: {username : username, profileImageUrl: url}}}
                 let values = [uid: dictValues]
@@ -219,24 +216,14 @@ class SignupViewController: UIViewController {
         
         signupButton.isEnabled = false
         signupButton.setTitleColor(UIColor.mainGray(), for: .normal)
+        
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.barTintColor = .white
+        navigationController?.navigationBar.isHidden = false
     }
-    
-    let noAccountSignUpButton: UIButton = {
-       let button = UIButton(type: .system)
-       
-       let attributedTitle = NSMutableAttributedString(string: "Already have an account? ", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.black])
-       
-       attributedTitle.append(NSAttributedString(string: "Login!", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.black]))
-       
-       button.setAttributedTitle(attributedTitle, for: .normal)
-       
-       button.addTarget(self, action: #selector(handleShowLogin), for: .touchUpInside)
-       
-       return button
-    }()
-    
-    @objc func handleShowLogin() {
-        navigationController?.popViewController(animated: true)
+        
+    override func viewWillDisappear(_ animated: Bool) {
+        navigationController?.navigationBar.isHidden = true
     }
     
     override func viewDidLoad() {
@@ -244,25 +231,29 @@ class SignupViewController: UIViewController {
         
         view.backgroundColor = .white
         
-        self.navigationController?.navigationBar.isHidden = true
+        setupNavigationItems()
         
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tap)
         
-        view.addSubview(logoImageView)
+        view.addSubview(signupLabel)
         view.addSubview(errorMessageLabel)
-        view.addSubview(noAccountSignUpButton)
-        
-        logoImageView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 100, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+
+        signupLabel.anchor(top: view.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 100, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        signupLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
         styleTextFields()
         
         setupInputFields()
         
         errorMessageLabel.anchor(top: signupButton.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 30, paddingBottom: 0, paddingRight: 30, width: 0, height: 0)
-        
-        noAccountSignUpButton.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 50, paddingBottom: 100, paddingRight: 50, width: 0, height: 0)
-
+    }
+    
+    fileprivate func setupNavigationItems() {
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "back").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleBackClick))
+    }
+    @objc func handleBackClick() {
+        navigationController?.popViewController(animated: true)
     }
     
     @objc func dismissKeyboard() {
@@ -297,11 +288,11 @@ class SignupViewController: UIViewController {
         let stackView = UIStackView(arrangedSubviews: [usernameView, emailView, passwordView, retypePasswordView, signupButton])
         
         stackView.axis = .vertical
-        stackView.spacing = 0
+        stackView.spacing = 20
         stackView.distribution = .fillEqually
         
         view.addSubview(stackView)
-        stackView.anchor(top: logoImageView.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 50, paddingBottom: 0, paddingRight: 50, width: 0, height: 500)
+        stackView.anchor(top: nil, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 50, paddingBottom: 0, paddingRight: 50, width: 0, height: 580)
         stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
     }
 }

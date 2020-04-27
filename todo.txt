@@ -6,5 +6,11 @@
 [X] Retrieve posts from user to show on their profile.
 [X] When clicking a post, make it expand to full screen.
 
+[X] Search view is shown when clicked on magnifying close.
+[X] Search for user and view their account
+
+[X] Ability to follow a user
+[X] Ability to unfollow a user
+
 [] Ability to like a post.
 [] Show that you liked a post.

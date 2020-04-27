@@ -16,6 +16,8 @@ class TimelineViewController: UICollectionViewController, UICollectionViewDelega
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        
         collectionView.backgroundColor = .white
         collectionView.register(TimelinePostCell.self, forCellWithReuseIdentifier: cellId)
         setupNavigationBar()
@@ -28,29 +30,16 @@ class TimelineViewController: UICollectionViewController, UICollectionViewDelega
     }
     
     @objc func handleSearchClick() {
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let searchViewController = SearchViewController(collectionViewLayout: UICollectionViewFlowLayout())
         
-        alertController.addAction(UIAlertAction(title: "Log Out", style: .destructive, handler: { (_) in
-            do {
-                try Auth.auth().signOut()
-                
-                // Want to wrap the login view controller in navControl to not push the registration view onto the stack
-                let loginController = LoginViewController()
-                let navController = UINavigationController(rootViewController: loginController)
-                navController.modalPresentationStyle = .fullScreen
-                self.present(navController, animated: true, completion: nil)
-            } catch let signOutErr {
-                print("Failed to sign out: ", signOutErr)
-            }
-        }))
-        
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        alertController.modalPresentationStyle = .fullScreen
-        present(alertController, animated: true, completion: nil)
+        navigationController?.pushViewController(searchViewController, animated: true)
     }
     
     @objc func handleProfileClick() {
         let profileViewController = ProfileViewController(collectionViewLayout: UICollectionViewFlowLayout())
+        
+        guard let currentUserId = Auth.auth().currentUser?.uid else { return }
+        profileViewController.userId = currentUserId
         
         navigationController?.pushViewController(profileViewController, animated: true)
     }

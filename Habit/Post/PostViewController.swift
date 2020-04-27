@@ -23,7 +23,7 @@ class PostViewController: UIViewController {
     let cancelButton: UIButton = {
         let btn = UIButton(type: .system)
         
-        btn.setImage(#imageLiteral(resourceName: "cancel").withRenderingMode(.alwaysOriginal), for: .normal)
+        btn.setImage(#imageLiteral(resourceName: "exit").withRenderingMode(.alwaysOriginal), for: .normal)
         
         btn.addTarget(self, action: #selector(handleCancel), for: .touchUpInside)
         

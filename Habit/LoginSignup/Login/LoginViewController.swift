@@ -6,23 +6,19 @@
 //  Copyright © 2020 Ali Sanaknaki. All rights reserved.
 //
 
-import Foundation
 import UIKit
 import Firebase
 
 class LoginViewController: UIViewController {
+            
+    let loginLabel: UILabel = {
+        let label = UILabel()
         
-    let logoImageView: UIView = {
-        let view = UIView()
-        
-        let logoImageView = UIImageView(image: #imageLiteral(resourceName: "icon").withRenderingMode(.alwaysOriginal))
-        logoImageView.contentMode = .scaleAspectFill
-    
-        view.addSubview(logoImageView)
-        logoImageView.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 30, height: 60)
-        logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        
-        return view
+        label.text = "Log In"
+        label.textColor = .mainBlue()
+        label.font = UIFont.boldSystemFont(ofSize: 22)
+         
+        return label
     }()
     
     let emailLabel: UILabel = {
@@ -30,7 +26,7 @@ class LoginViewController: UIViewController {
         
         lbl.text = "Email"
         
-        lbl.textColor = .black
+        lbl.textColor = .mainGray()
         lbl.font = UIFont.systemFont(ofSize: 14)
         
         return lbl
@@ -41,7 +37,7 @@ class LoginViewController: UIViewController {
         
         lbl.text = "Password"
         
-        lbl.textColor = .black
+        lbl.textColor = .mainGray()
         lbl.font = UIFont.systemFont(ofSize: 12)
         
         return lbl
@@ -139,26 +135,6 @@ class LoginViewController: UIViewController {
         return err
     }()
     
-    let haveAnAccountLoginButton: UIButton = {
-       let btn = UIButton(type: .system)
-       
-       let attributedTitle = NSMutableAttributedString(string: "Don't have an account? ", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.black])
-       
-       attributedTitle.append(NSAttributedString(string: "Sign Up!", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.black]))
-       
-       btn.setAttributedTitle(attributedTitle, for: .normal)
-       
-       btn.addTarget(self, action: #selector(handleShowSignUp), for: .touchUpInside)
-       
-       return btn
-    }()
-    
-    @objc func handleShowSignUp() {
-        let signUpController = SignupViewController()
-        
-        navigationController?.pushViewController(signUpController, animated: true)
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         emailTextField.text = ""
         passwordTextField.text = ""
@@ -167,32 +143,44 @@ class LoginViewController: UIViewController {
         
         loginButton.isEnabled = false
         loginButton.setTitleColor(UIColor.mainGray(), for: .normal)
+        
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.barTintColor = .white
+        navigationController?.navigationBar.isHidden = false
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        navigationController?.navigationBar.isHidden = true
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.white
         
-        self.navigationController?.navigationBar.isHidden = true
+        view.backgroundColor = UIColor.white
+
+        setupNavigationItems()
         
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tap)
         
-        view.addSubview(logoImageView)
+        view.addSubview(loginLabel)
         view.addSubview(errorMessageLabel)
-        view.addSubview(haveAnAccountLoginButton)
         
-        
-        logoImageView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 100, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        loginLabel.anchor(top: view.topAnchor, left: nil, bottom: nil, right: nil, paddingTop: 100, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        loginLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
         styleTextFields()
         
         setupInputFields()
 
         errorMessageLabel.anchor(top: loginButton.bottomAnchor, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 10, paddingLeft: 30, paddingBottom: 0, paddingRight: 30, width: 0, height: 35)
-        
-        haveAnAccountLoginButton.anchor(top: nil, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 100, paddingRight: 0, width: 0, height: 0)
-
+    }
+    
+    fileprivate func setupNavigationItems() {
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "back").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleBackClick))
+    }
+    @objc func handleBackClick() {
+        navigationController?.popViewController(animated: true)
     }
     
     @objc func dismissKeyboard() {
@@ -216,11 +204,11 @@ class LoginViewController: UIViewController {
         let stackView = UIStackView(arrangedSubviews: [emailView, passwordView, loginButton])
         
         stackView.axis = .vertical
-        stackView.spacing = 0
+        stackView.spacing = 20
         stackView.distribution = .fillEqually
                 
         view.addSubview(stackView)
-        stackView.anchor(top: nil, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 50, paddingBottom: 0, paddingRight: 50, width: 0, height: 300)
+        stackView.anchor(top: nil, left: view.leftAnchor, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 50, paddingBottom: 0, paddingRight: 50, width: 0, height: 340)
         stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
     }
 }
