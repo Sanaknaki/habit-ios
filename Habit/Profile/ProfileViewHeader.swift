@@ -15,6 +15,7 @@ class ProfileViewHeader: UICollectionViewCell {
         
         label.text = ""
         
+        label.textColor = .mainGray()
         label.font = UIFont.boldSystemFont(ofSize: 14)
         
         return label

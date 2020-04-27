@@ -15,4 +15,4 @@
 [] Ability to like a post.
 [] Show that you liked a post.
 
-💻 New splash + login/signup screen.
+💻 When logging out, redirect to login/signup view, not login view.
