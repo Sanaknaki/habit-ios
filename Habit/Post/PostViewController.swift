@@ -12,9 +12,11 @@ import Firebase
 
 class PostViewController: UIViewController {
     
+    var postId = ""
+    var hasLiked = false
+    
     let previewImageView: CustomImageView = {
         let iv = CustomImageView()
-        
         iv.contentMode = .scaleAspectFill
         
         return iv
@@ -45,7 +47,25 @@ class PostViewController: UIViewController {
     }()
     
     @objc func handleLike() {
-        print(123)
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        
+        let values = [uid: hasLiked == true ? 0 : 1]
+        
+        Database.database().reference().child("likes").child(postId).updateChildValues(values) { (err, ref) in
+            if let err = err {
+                print("Failed to like post: ", err)
+                return
+            }
+            
+            print("Successfully liked post!")
+            
+            self.hasLiked = !self.hasLiked
+            
+            // Notified app with a specific name to update feed given the name, must add observer in the HomeController
+            NotificationCenter.default.post(name: PostViewController.updateFeedNotificationName, object: nil)
+            
+            self.viewDidLoad()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -54,6 +74,8 @@ class PostViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        likeButton.setImage(hasLiked == true ? #imageLiteral(resourceName: "star-clicked").withRenderingMode(.alwaysOriginal) : #imageLiteral(resourceName: "star").withRenderingMode(.alwaysOriginal), for: .normal)
         
         view.backgroundColor = .mainGray()
         
@@ -67,5 +89,8 @@ class PostViewController: UIViewController {
         likeButton.anchor(top: nil, left: nil, bottom: view.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 36, paddingRight: 0, width: 35, height: 35)
         likeButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     }
+    
+    // Can be accessed now by calling it through the class, so can be called from anywhere
+    static let updateFeedNotificationName = NSNotification.Name(rawValue: "UpdateFeed")
 }
 

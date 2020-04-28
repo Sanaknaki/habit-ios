@@ -14,5 +14,7 @@
 
 [X] Be able to see posts of users you follow / yourself on timeline
 
-[] Ability to like a post.
-[] Show that you liked a post.
+[X] Ability to like a post.
+[X] Show that you liked a post.
+
+[] Handle Refresh on timeline.

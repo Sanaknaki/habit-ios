@@ -18,7 +18,14 @@ class TimelineViewController: UICollectionViewController, UICollectionViewDelega
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(handleUpdateFeed), name: PostViewController.updateFeedNotificationName, object: nil)
+        
         self.navigationController?.navigationBar.shadowImage = UIImage()
+        
+        // Refresh
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
+        collectionView.refreshControl = refreshControl
         
         collectionView.backgroundColor = .white
         collectionView.register(TimelinePostCell.self, forCellWithReuseIdentifier: cellId)
@@ -27,6 +34,18 @@ class TimelineViewController: UICollectionViewController, UICollectionViewDelega
         fetchAllPosts()
         
         collectionView.alwaysBounceVertical = true
+    }
+    
+    // Auto update when we upload a new post
+    @objc func handleUpdateFeed() { handleRefresh() }
+    
+    @objc func handleRefresh() {
+        print("Handling Refresh...")
+        
+        // Reset the posts and then you will refetch with new following info and such
+        posts.removeAll()
+        
+        fetchAllPosts()
     }
     
     fileprivate func setupNavigationBar() {
@@ -161,5 +180,19 @@ class TimelineViewController: UICollectionViewController, UICollectionViewDelega
         cell.post = posts[indexPath.item]
         
         return cell
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let id = posts[indexPath.item].id else { return }
+        
+        let containerView = PostViewController()
+        
+        containerView.previewImageView.loadImage(urlString: posts[indexPath.item].imageUrl)
+        containerView.postId = id
+        containerView.hasLiked = posts[indexPath.item].hasLiked
+        
+        let navController = UINavigationController(rootViewController: containerView)
+        navController.modalPresentationStyle = .fullScreen
+        self.present(navController, animated:true, completion: nil)
     }
 }

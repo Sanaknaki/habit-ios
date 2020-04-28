@@ -17,6 +17,7 @@ class TimelinePostCell: UICollectionViewCell {
             guard let post = post else { return }
             postImage.loadImage(urlString: postImageUrl)
             
+            // Username and post date for post
             let attributedText = NSMutableAttributedString(string: post.user.username, attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 15), NSAttributedString.Key.foregroundColor: UIColor.white])
             
             attributedText.append(NSAttributedString(string: "\n", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 4)]))
@@ -25,17 +26,15 @@ class TimelinePostCell: UICollectionViewCell {
             attributedText.append(NSAttributedString(string: timeAgoDisplay, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.white]))
             
             userNameAndTimestampLabel.attributedText = attributedText
+            
+            // Like button status
+            likedButton.setImage(post.hasLiked == true ? #imageLiteral(resourceName: "star-clicked").withRenderingMode(.alwaysOriginal) : #imageLiteral(resourceName: "star").withRenderingMode(.alwaysOriginal), for: .normal)
         }
     }
     
     let userNameAndTimestampLabel: UILabel = {
         let label = UILabel()
-                
-//        let attributedText = NSMutableAttributedString(string: "@username\n", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 15), NSAttributedString.Key.foregroundColor: UIColor.white])
-//
-//        attributedText.append(NSAttributedString(string: "12m ago", attributes: [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12)]))
         
-//        label.attributedText = attributedText
         label.numberOfLines = 0
         
         label.font = UIFont.systemFont(ofSize: 14)
