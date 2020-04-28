@@ -38,14 +38,13 @@ class ProfileViewPostCell: UICollectionViewCell {
         label.layer.shadowOffset = CGSize(width: 1.0, height: 1.0)
         label.layer.shadowOpacity = 0.5;
         label.layer.shadowRadius = 0.5;
-        
         return label
     }()
     
     let photoImageView: CustomImageView = {
         let iv = CustomImageView()
         
-        iv.backgroundColor = UIColor.lightGray
+        iv.backgroundColor = UIColor.mainGray()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         
@@ -66,15 +65,15 @@ class ProfileViewPostCell: UICollectionViewCell {
         backgroundColor = .white
         
         addSubview(photoImageView)
-        
+        photoImageView.layer.cornerRadius = self.frame.width / 2
         photoImageView.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
             
-        photoImageView.addSubview(userNameAndTimestampLabel)
-        photoImageView.addSubview(likedButton)
-        
-        userNameAndTimestampLabel.anchor(top: nil, left: photoImageView.leftAnchor, bottom: photoImageView.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: 8, paddingRight: 0, width: 0, height: 0)
-        
-        likedButton.anchor(top: nil, left: nil, bottom: photoImageView.bottomAnchor, right: photoImageView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 8, paddingRight: 8, width: 20, height: 20)
+//        photoImageView.addSubview(userNameAndTimestampLabel)
+//        photoImageView.addSubview(likedButton)
+//
+//        userNameAndTimestampLabel.anchor(top: nil, left: photoImageView.leftAnchor, bottom: photoImageView.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: 8, paddingRight: 0, width: 0, height: 0)
+//
+//        likedButton.anchor(top: nil, left: nil, bottom: photoImageView.bottomAnchor, right: photoImageView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 8, paddingRight: 8, width: 20, height: 20)
     }
     
     required init?(coder: NSCoder) {

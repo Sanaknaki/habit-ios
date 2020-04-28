@@ -12,5 +12,7 @@
 [X] Ability to follow a user
 [X] Ability to unfollow a user
 
+[X] Be able to see posts of users you follow / yourself on timeline
+
 [] Ability to like a post.
 [] Show that you liked a post.
