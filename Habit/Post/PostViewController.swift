@@ -22,6 +22,14 @@ class PostViewController: UIViewController {
         return iv
     }()
     
+    let usernameAndTimestamp: UILabel = {
+        let label = UILabel()
+        
+        label.numberOfLines = 0
+        
+        return label
+    }()
+    
     let cancelButton: UIButton = {
         let btn = UIButton(type: .system)
         
@@ -82,8 +90,12 @@ class PostViewController: UIViewController {
         view.addSubview(previewImageView)
         previewImageView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
+        view.addSubview(usernameAndTimestamp)
+        usernameAndTimestamp.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 48, paddingLeft: 36, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        
         view.addSubview(cancelButton)
-        cancelButton.anchor(top: view.topAnchor, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: 48, paddingLeft: 0, paddingBottom: 0, paddingRight: 36, width: 20, height: 20)
+        cancelButton.anchor(top: nil, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 36, width: 20, height: 20)
+        cancelButton.centerYAnchor.constraint(equalTo: usernameAndTimestamp.centerYAnchor).isActive = true
 
         view.addSubview(likeButton)
         likeButton.anchor(top: nil, left: nil, bottom: view.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 36, paddingRight: 0, width: 35, height: 35)

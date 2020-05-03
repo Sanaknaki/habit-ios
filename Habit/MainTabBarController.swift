@@ -11,27 +11,52 @@ import UIKit
 import Firebase
 
 class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
+    
+    var user: User?
+    var post: Post?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.delegate = self
         
         // Check if there's a user logged in, show login view
-        if(Auth.auth().currentUser == nil) {
-            DispatchQueue.main.async {
-                let loginViewController = LoginOrSignUpScreen()
-                let navController = UINavigationController(rootViewController: loginViewController)
-                navController.modalPresentationStyle = .fullScreen
-                self.present(navController, animated:true, completion: nil)
-            }
-            
-            return
-        }
+        test()
         
         setupViewControllers()
     }
     
+    fileprivate func test() {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let ref = Database.database().reference().child("posts").child(uid)
+        let query = ref.queryLimited(toLast: 1)
+        let calendar = Calendar.current
     
+        query.observeSingleEvent(of: .value) { (snapshot) in
+            guard var dicts = snapshot.value as? [String: Any] else { return }
+            guard let dictValues = dicts.first?.value as? [String : Any] else { return }
+            
+            let dateFormatted = Date(timeIntervalSince1970: dictValues["creationDate"] as? Double ?? 0)
+            
+            if(!calendar.isDateInYesterday(dateFormatted) || !calendar.isDateInToday(dateFormatted)) {
+                if(Auth.auth().currentUser == nil) {
+                    DispatchQueue.main.async {
+                        let loginViewController = LoginOrSignUpScreen()
+                        let navController = UINavigationController(rootViewController: loginViewController)
+                        navController.modalPresentationStyle = .fullScreen
+                        self.present(navController, animated:true, completion: nil)
+                    }
+                }
+            } else {
+                DispatchQueue.main.async {
+                    let gameOverViewController = GameOverViewController()
+                    let navController = UINavigationController(rootViewController: gameOverViewController)
+                    navController.modalPresentationStyle = .fullScreen
+                    self.present(navController, animated:true, completion: nil)
+                }
+            }
+        }
+    }
+
     @objc func handleCamera() {
          let cameraController = CameraController()
          cameraController.modalPresentationStyle = .fullScreen

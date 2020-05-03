@@ -14,30 +14,27 @@ class ProfileViewPostCell: UICollectionViewCell {
     var post: Post? {
         didSet {
             guard let imageUrl = post?.imageUrl else { return }
-            guard let username = post?.user.username else { return }
             guard let createdDate = post?.creationDate else { return }
+            guard let isLiked = post?.hasLiked else { return }
             
             // Load the image for the post
             photoImageView.loadImage(urlString: imageUrl)
             
-            // Load creted date for the post
-            let attributedText = NSMutableAttributedString(string: username + "\n", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 15), NSAttributedString.Key.foregroundColor: UIColor.white])
+//            photoImageView.layer.borderColor = (isLiked == true) ? UIColor.mainBlue().cgColor : UIColor.mainGray().cgColor
+//            photoImageView.layer.borderWidth = 3
+
+            timestampLabel.text = createdDate.timeAgoDisplay(userDate: false)
             
-            attributedText.append(NSAttributedString(string: createdDate.timeAgoDisplay(userDate: false), attributes: [NSAttributedString.Key.foregroundColor: UIColor.white, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12)]))
-            
-            userNameAndTimestampLabel.attributedText = attributedText
+            likedBar.layer.backgroundColor = (isLiked == true) ? UIColor.mainBlue().cgColor : UIColor.mainGray().cgColor
         }
     }
     
-    let userNameAndTimestampLabel: UILabel = {
+    let timestampLabel: UILabel = {
         let label = UILabel()
                 
         label.numberOfLines = 0
-                
-        label.layer.shadowColor = UIColor.black.cgColor;
-        label.layer.shadowOffset = CGSize(width: 1.0, height: 1.0)
-        label.layer.shadowOpacity = 0.5;
-        label.layer.shadowRadius = 0.5;
+        label.textColor = .black
+        label.font = UIFont.boldSystemFont(ofSize: 12)
         return label
     }()
     
@@ -47,6 +44,8 @@ class ProfileViewPostCell: UICollectionViewCell {
         iv.backgroundColor = UIColor.mainGray()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
+        
+        iv.layer.cornerRadius = 5
         
         return iv
     }()
@@ -59,19 +58,33 @@ class ProfileViewPostCell: UICollectionViewCell {
         return btn
     }()
     
+    let likedBar: UIView = {
+        let view = UIView()
+        
+        view.backgroundColor = UIColor.mainGray()
+        view.layer.cornerRadius = 2
+        
+        return view
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         backgroundColor = .white
         
         addSubview(photoImageView)
-        photoImageView.layer.cornerRadius = self.frame.width / 2
-        photoImageView.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        addSubview(timestampLabel)
+        addSubview(likedBar)
+        
+        // photoImageView.layer.cornerRadius = self.frame.width / 2
+        photoImageView.anchor(top: topAnchor, left: nil, bottom: bottomAnchor, right: nil, paddingTop: 10, paddingLeft: 0, paddingBottom: 10, paddingRight: 0, width: frame.width, height: 0)
+        
+        likedBar.anchor(top: photoImageView.bottomAnchor, left: photoImageView.leftAnchor, bottom: nil, right: photoImageView.rightAnchor, paddingTop: 5, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 5)
+//        photoImageView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        // photoImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
             
-//        photoImageView.addSubview(userNameAndTimestampLabel)
-//        photoImageView.addSubview(likedButton)
-//
-//        userNameAndTimestampLabel.anchor(top: nil, left: photoImageView.leftAnchor, bottom: photoImageView.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: 8, paddingRight: 0, width: 0, height: 0)
+        timestampLabel.anchor(top: likedBar.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        timestampLabel.centerXAnchor.constraint(equalTo: photoImageView.centerXAnchor).isActive = true
 //
 //        likedButton.anchor(top: nil, left: nil, bottom: photoImageView.bottomAnchor, right: photoImageView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 8, paddingRight: 8, width: 20, height: 20)
     }

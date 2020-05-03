@@ -27,7 +27,7 @@ class LoginOrSignUpScreen: UIViewController {
     }()
     
     let loginButton: UIButton = {
-       let btn = UIButton()
+        let btn = UIButton(type: .system)
         
         btn.setTitle("Log In", for: .normal)
         btn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
@@ -46,7 +46,7 @@ class LoginOrSignUpScreen: UIViewController {
     }
     
     let signUpButton: UIButton = {
-       let btn = UIButton()
+        let btn = UIButton(type: .system)
         
         btn.setTitle("Sign Up", for: .normal)
         btn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)

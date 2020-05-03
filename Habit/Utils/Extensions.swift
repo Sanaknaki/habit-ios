@@ -15,8 +15,8 @@ extension UIColor {
         return UIColor(red: red/255, green: green/255, blue: blue/255, alpha: 1)
     }
     
-    static func theRed() -> UIColor {
-        return UIColor.rgb(red: 206, green: 70, blue: 70)
+    static func mainRed() -> UIColor {
+        return UIColor.rgb(red: 242, green: 89, blue: 89)
     }
     
     static func mainBlue() -> UIColor {
@@ -49,6 +49,22 @@ extension UIView {
 }
 
 extension Date {
+    
+    func howManyDaysHasItBeen() -> Int {
+        let secondsAgo = Int(Date().timeIntervalSince(self))
+        
+        let minute = 60
+        let hour = 60 * minute
+        let day = 24 * hour
+        
+        if (secondsAgo < minute || secondsAgo < hour || secondsAgo < day) {
+            return 0
+        } else {
+            let quotient = secondsAgo / day
+            return quotient
+        }
+    }
+    
     func timeAgoDisplay(userDate: Bool) -> String {
         let secondsAgo = Int(Date().timeIntervalSince(self))
         
@@ -62,7 +78,7 @@ extension Date {
         let unit: String
         if secondsAgo < minute {
             quotient = secondsAgo
-            unit = "sec"
+            unit = "s"
         } else if secondsAgo < hour {
             quotient = secondsAgo / minute
             unit = "min"
@@ -71,7 +87,11 @@ extension Date {
             unit = "hr"
         } else if secondsAgo < week {
             quotient = secondsAgo / day
-            unit = "day"
+            if(quotient == 1 ) {
+                unit = "yesterday"
+            } else {
+                unit = "d"
+            }
         } else if secondsAgo < month {
             quotient = secondsAgo / week
             unit = "wk"
@@ -80,10 +100,14 @@ extension Date {
             unit = "mth"
         }
 
+        if(unit == "yesterday") {
+            return unit
+        }
+        
         if(userDate) {
-            return "\(quotient) \(unit)\(quotient == 1 ? "" : "s")"
+            return "\(quotient)\(unit)\(quotient == 1 ? "" : "s")"
         } else {
-            return "\(quotient) \(unit)\(quotient == 1 ? "" : "s") ago"
+            return "\(quotient)\(unit) ago"
         }
         
     }

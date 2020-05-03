@@ -119,11 +119,14 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(handleUpdateFeed), name: PostViewController.updateFeedNotificationName, object: nil)
+        
         self.navigationController?.navigationBar.shadowImage = UIImage()
         
         collectionView.backgroundColor = .white
         collectionView.register(ProfileViewHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
         collectionView.register(ProfileViewPostCell.self, forCellWithReuseIdentifier: cellId)
+       
         setupNavigationBar()
         
         collectionView.alwaysBounceVertical = true
@@ -148,7 +151,13 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
             self.paginatePosts()
         }
     }
+    
+    @objc func handleUpdateFeed() {
+        posts.removeAll()
         
+        fetchUser()
+    }
+    
     func setupNavigationBar() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "back").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleBackClick))
         navigationItem.setHidesBackButton(true, animated: false)
@@ -207,14 +216,14 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
 //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
 //        return 10
 //    }
-    
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        UIEdgeInsets(top: 20.0, left: 20.0, bottom: 20.0, right: 20.0)
+        UIEdgeInsets(top: 5.0, left: 5.0, bottom: 5.0, right: 5.0)
     }
     
     // Right/Left spacing
 //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-//        return 10
+//        return 5
 //    }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -222,21 +231,23 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = ((view.frame.width / 3 ) - 40)
-        let height = ((view.frame.height) / 6) - 40
+        let width = ((view.frame.width / 3)) - 10
+        let height = ((view.frame.height) / 3.5) - 10
         
         return CGSize(width: width, height: height)
     }
 
+    var p = 1
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         // Fire off paginate call
-        if indexPath.item == self.posts.count - 1 && !isFinishedPaging {
-            paginatePosts()
-        }
+//        if indexPath.item == self.posts.count - 1 && !isFinishedPaging {
+//            paginatePosts()
+//        }
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ProfileViewPostCell
-        cell.post = posts[indexPath.item]
         
+        cell.post = posts[indexPath.item]
+
         return cell
     }
     
@@ -247,49 +258,91 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
         print("Start paging for more posts.")
         
         // Get user of profile, could be you, could be someone you searching
+        guard let user = self.user else { return }
         guard let uid = self.user?.uid else { return }
         let ref = Database.database().reference().child("posts").child(uid)
         
-        // Limit results by toFirst
-        var query = ref.queryOrdered(byChild: "creationDate")
-        
-        // Grab last cell posted
-        if posts.count > 0 {
-            let value = posts.last?.creationDate.timeIntervalSince1970
-            query = query.queryEnding(atValue: value)
-        }
-        
-        query.queryLimited(toLast: 4).observeSingleEvent(of: .value, with: { (snapshot) in
+        ref.observeSingleEvent(of: .value, with: { (snapshot) in
             
-            // All of the remaining objects in snapshot
-            guard var allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+            // Stop the refresh
+            self.collectionView.refreshControl?.endRefreshing()
             
-            allObjects.reverse()
+            guard let dicts = snapshot.value as? [String: Any] else { return }
             
-            if allObjects.count < 4 {
-                self.isFinishedPaging = true
-            }
-            
-            if self.posts.count > 0 && allObjects.count > 0 {
-                allObjects.removeFirst()
-            }
-
-            guard let user = self.user else { return }
-            
-            allObjects.forEach ({ (snapshot) in
-                // print(snapshot.key)
+            // Value would be the attributes
+            dicts.forEach({ (key: String, value: Any) in
+                guard let dict = value as? [String: Any] else { return }
                 
-                guard let dict = snapshot.value as? [String: Any] else { return }
                 var post = Post(user: user, dictionary: dict)
+                post.id = key
                 
-                post.id = snapshot.key // have to capture post id
-                self.posts.append(post)
+                guard let uid = Auth.auth().currentUser?.uid else { return }
+                
+                Database.database().reference().child("likes").child(key).child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
+                    
+                    if let value = snapshot.value as? Int, value == 1 {
+                        post.hasLiked = true
+                    } else {
+                        post.hasLiked = false
+                    }
+                    
+                    
+                    self.posts.append(post)
+                    
+                    // Show earliest posts first
+                    self.posts.sort(by: { (p1, p2) -> Bool in
+                        return p1.creationDate.compare(p2.creationDate) == .orderedDescending
+                    })
+                    
+                    self.collectionView?.reloadData()
+                    
+                }, withCancel: { (err) in
+                    print("Failed to fetch like info for post: ", err)
+                })
             })
-            
-            self.collectionView.reloadData()
         }) { (err) in
-            print("Failed to paginate for posts: ", err)
+            print("Failed to fetch posts: ", err)
         }
+//        // Order by creation date
+//        var query = ref.queryOrdered(byChild: "creationDate")
+//
+//        // Grab last cell posted
+//        if posts.count > 0 {
+//            let value = posts.last?.creationDate.timeIntervalSince1970
+//            query = query.queryEnding(atValue: value)
+//        }
+//
+//        query.queryLimited(toLast: 4).observeSingleEvent(of: .value, with: { (snapshot) in
+//
+//            // All of the remaining objects in snapshot
+//            guard var allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
+//
+//            allObjects.reverse()
+//
+//            if allObjects.count < 4 {
+//                self.isFinishedPaging = true
+//            }
+//
+//            if self.posts.count > 0 && allObjects.count > 0 {
+//                allObjects.removeFirst()
+//            }
+//
+//            guard let user = self.user else { return }
+//
+//            allObjects.forEach ({ (snapshot) in
+//                // print(snapshot.key)
+//
+//                guard let dict = snapshot.value as? [String: Any] else { return }
+//                var post = Post(user: user, dictionary: dict)
+//
+//                post.id = snapshot.key // have to capture post id
+//                self.posts.append(post)
+//            })
+//
+//            self.collectionView.reloadData()
+//        }) { (err) in
+//            print("Failed to paginate for posts: ", err)
+//        }
     }
     
     override var prefersStatusBarHidden: Bool {
@@ -297,15 +350,25 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let containerView = PostViewController()
+        guard let id = posts[indexPath.item].id else { return }
+        let username = posts[indexPath.item].user.username
+        let timestamp = posts[indexPath.item].creationDate
         
+        let containerView = PostViewController()
         containerView.previewImageView.loadImage(urlString: posts[indexPath.item].imageUrl)
+        containerView.postId = id
+        containerView.hasLiked = posts[indexPath.item].hasLiked
+        
+        let attributedText = NSMutableAttributedString(string: username + "\n", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16), NSAttributedString.Key.foregroundColor: UIColor.white])
+        
+        attributedText.append(NSAttributedString(string: timestamp.timeAgoDisplay(userDate: false), attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.white]))
+    
+        containerView.usernameAndTimestamp.attributedText = attributedText
         
         let navController = UINavigationController(rootViewController: containerView)
         navController.modalPresentationStyle = .fullScreen
         self.present(navController, animated:true, completion: nil)
         
     }
-    
 }
 

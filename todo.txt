@@ -17,4 +17,4 @@
 [X] Ability to like a post.
 [X] Show that you liked a post.
 
-[] Handle Refresh on timeline.
+[X] Handle Refresh on timeline.

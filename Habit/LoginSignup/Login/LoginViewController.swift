@@ -89,7 +89,7 @@ class LoginViewController: UIViewController {
     }
     
     let loginButton: UIButton = {
-       let btn = UIButton()
+        let btn = UIButton(type: .system)
         
         btn.isEnabled = false
         btn.setTitle("Login", for: .normal)
@@ -106,7 +106,7 @@ class LoginViewController: UIViewController {
         Auth.auth().signIn(withEmail: email, password: password) { (user: AuthDataResult?, err: Error?) in
             if let err = err {
                 print("Failed to perform login : ", err)
-                self.errorMessageLabel.attributedText = NSMutableAttributedString(string: err.localizedDescription, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.theRed()])
+                self.errorMessageLabel.attributedText = NSMutableAttributedString(string: err.localizedDescription, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.mainRed()])
                 self.errorMessageLabel.isHidden = false
                 return
             }

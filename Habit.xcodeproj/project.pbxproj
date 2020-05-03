@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2332F671244CB03E00BCBE1B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2332F670244CB03E00BCBE1B /* GoogleService-Info.plist */; };
 		2332F673244F3BD500BCBE1B /* ProfileViewPostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2332F672244F3BD500BCBE1B /* ProfileViewPostCell.swift */; };
 		2332F675244F3EB600BCBE1B /* ProfileViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2332F674244F3EB600BCBE1B /* ProfileViewHeader.swift */; };
 		2332F678244F64DE00BCBE1B /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2332F677244F64DE00BCBE1B /* CameraController.swift */; };
@@ -19,6 +18,8 @@
 		2332F6852450A3C200BCBE1B /* FirebaseExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2332F6842450A3C200BCBE1B /* FirebaseExtensions.swift */; };
 		2332F6872450A60800BCBE1B /* CustomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2332F6862450A60800BCBE1B /* CustomImageView.swift */; };
 		2332F68A2450B61000BCBE1B /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2332F6892450B60F00BCBE1B /* PostViewController.swift */; };
+		2341F0A3245A2F7A00435B8D /* GameOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2341F0A2245A2F7A00435B8D /* GameOverViewController.swift */; };
+		2341F0A5245B590700435B8D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2341F0A4245B590700435B8D /* GoogleService-Info.plist */; };
 		234AAFF324533539009400C0 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234AAFF224533539009400C0 /* SearchViewController.swift */; };
 		234AAFF524533597009400C0 /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234AAFF424533597009400C0 /* SearchResultCell.swift */; };
 		234AAFFB245635AF009400C0 /* LoginOrSignUpScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234AAFFA245635AF009400C0 /* LoginOrSignUpScreen.swift */; };
@@ -44,7 +45,6 @@
 
 /* Begin PBXFileReference section */
 		064BC0392DCF5C2725763459 /* Pods-Theday.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Theday.release.xcconfig"; path = "Target Support Files/Pods-Theday/Pods-Theday.release.xcconfig"; sourceTree = "<group>"; };
-		2332F670244CB03E00BCBE1B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2332F672244F3BD500BCBE1B /* ProfileViewPostCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewPostCell.swift; sourceTree = "<group>"; };
 		2332F674244F3EB600BCBE1B /* ProfileViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewHeader.swift; sourceTree = "<group>"; };
 		2332F677244F64DE00BCBE1B /* CameraController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
@@ -56,6 +56,8 @@
 		2332F6842450A3C200BCBE1B /* FirebaseExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseExtensions.swift; sourceTree = "<group>"; };
 		2332F6862450A60800BCBE1B /* CustomImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImageView.swift; sourceTree = "<group>"; };
 		2332F6892450B60F00BCBE1B /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
+		2341F0A2245A2F7A00435B8D /* GameOverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverViewController.swift; sourceTree = "<group>"; };
+		2341F0A4245B590700435B8D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		234AAFF224533539009400C0 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		234AAFF424533597009400C0 /* SearchResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
 		234AAFFA245635AF009400C0 /* LoginOrSignUpScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginOrSignUpScreen.swift; sourceTree = "<group>"; };
@@ -124,6 +126,14 @@
 			path = Post;
 			sourceTree = "<group>";
 		};
+		2341F0A1245A2F5B00435B8D /* GameOver */ = {
+			isa = PBXGroup;
+			children = (
+				2341F0A2245A2F7A00435B8D /* GameOverViewController.swift */,
+			);
+			path = GameOver;
+			sourceTree = "<group>";
+		};
 		234AAFF1245333BA009400C0 /* Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -165,6 +175,7 @@
 			isa = PBXGroup;
 			children = (
 				2332F676244F617300BCBE1B /* Camera */,
+				2341F0A1245A2F5B00435B8D /* GameOver */,
 				234AAFF924563594009400C0 /* LoginSignup */,
 				2332F67F2450A28500BCBE1B /* Model */,
 				23DF7271244409A90050A7D3 /* PhotoSelector */,
@@ -179,8 +190,8 @@
 				23DF72522442C1DE0050A7D3 /* Main.storyboard */,
 				23DF72552442C1E50050A7D3 /* Assets.xcassets */,
 				23DF72572442C1E50050A7D3 /* LaunchScreen.storyboard */,
+				2341F0A4245B590700435B8D /* GoogleService-Info.plist */,
 				23DF725A2442C1E50050A7D3 /* Info.plist */,
-				2332F670244CB03E00BCBE1B /* GoogleService-Info.plist */,
 				23DF72602442C5AE0050A7D3 /* MainTabBarController.swift */,
 			);
 			path = Habit;
@@ -322,7 +333,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				23DF72592442C1E50050A7D3 /* LaunchScreen.storyboard in Resources */,
-				2332F671244CB03E00BCBE1B /* GoogleService-Info.plist in Resources */,
+				2341F0A5245B590700435B8D /* GoogleService-Info.plist in Resources */,
 				23DF72562442C1E50050A7D3 /* Assets.xcassets in Resources */,
 				23DF72542442C1DE0050A7D3 /* Main.storyboard in Resources */,
 			);
@@ -390,6 +401,7 @@
 				2332F67A244F680D00BCBE1B /* PreviewPhotoContainer.swift in Sources */,
 				2332F67E244F72B000BCBE1B /* CustomAnimationDismisser.swift in Sources */,
 				234AAFFB245635AF009400C0 /* LoginOrSignUpScreen.swift in Sources */,
+				2341F0A3245A2F7A00435B8D /* GameOverViewController.swift in Sources */,
 				23DF7286244634ED0050A7D3 /* LoginSignUpInputTextField.swift in Sources */,
 				2332F6852450A3C200BCBE1B /* FirebaseExtensions.swift in Sources */,
 				23DF727324441F500050A7D3 /* PhotoSelectorController.swift in Sources */,

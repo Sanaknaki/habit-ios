@@ -18,24 +18,48 @@ class TimelinePostCell: UICollectionViewCell {
             postImage.loadImage(urlString: postImageUrl)
             
             // Username and post date for post
-            let attributedText = NSMutableAttributedString(string: post.user.username, attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 15), NSAttributedString.Key.foregroundColor: UIColor.white])
             
-            attributedText.append(NSAttributedString(string: "\n", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 4)]))
-            
-            let timeAgoDisplay = post.creationDate.timeAgoDisplay(userDate: false)
-            attributedText.append(NSAttributedString(string: timeAgoDisplay, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.white]))
-            
+            let attributedText = NSMutableAttributedString(string: post.user.username + "\n", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 18), NSAttributedString.Key.foregroundColor: UIColor.black])
+                
+            attributedText.append(NSAttributedString(string: post.creationDate.timeAgoDisplay(userDate: false), attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 10), NSAttributedString.Key.foregroundColor: UIColor.mainGray()]))
+        
             userNameAndTimestampLabel.attributedText = attributedText
             
-            // Like button status
-            likedButton.setImage(post.hasLiked == true ? #imageLiteral(resourceName: "star-clicked").withRenderingMode(.alwaysOriginal) : #imageLiteral(resourceName: "star").withRenderingMode(.alwaysOriginal), for: .normal)
+            usernameLabel.text = post.user.username
+            
+            timestampLabel.text = post.creationDate.timeAgoDisplay(userDate: false)
+                        
+            postImage.layer.cornerRadius = (frame.height - 30) / 2
+            
+            likedBar.layer.backgroundColor = (post.hasLiked == true) ? UIColor.mainBlue().cgColor : UIColor.mainGray().cgColor
         }
     }
+
+    let timestampLabel: UILabel = {
+        let label = UILabel()
+                
+        label.numberOfLines = 0
+        label.textColor = .mainGray()
+        label.font = UIFont.systemFont(ofSize: 12)
+        
+        return label
+    }()
+
+    let usernameLabel: UILabel = {
+        let label = UILabel()
+                
+        label.numberOfLines = 0
+        label.textColor = .black
+        label.font = UIFont.boldSystemFont(ofSize: 16)
+        
+        return label
+    }()
     
     let userNameAndTimestampLabel: UILabel = {
         let label = UILabel()
         
         label.numberOfLines = 0
+        label.textAlignment = .right
         
         label.font = UIFont.systemFont(ofSize: 14)
         
@@ -46,17 +70,20 @@ class TimelinePostCell: UICollectionViewCell {
         let postImage = CustomImageView()
         
         postImage.backgroundColor = .lightGray
-        postImage.layer.cornerRadius = 10
+        postImage.contentMode = .scaleAspectFill
+        postImage.clipsToBounds = true
+        
+        // postImage.layer.cornerRadius = (postImage.frame.height - 20) / 2
         
         return postImage
     }()
-    
-    let likedButton: UIButton = {
-        let btn = UIButton()
+
+    let likedBar: UIView = {
+        let view = UIView()
         
-        btn.setImage(#imageLiteral(resourceName: "star"), for: .normal)
-        
-        return btn
+        view.backgroundColor = UIColor.mainGray()
+        view.layer.cornerRadius = 2
+        return view
     }()
     
     override init(frame: CGRect) {
@@ -65,16 +92,28 @@ class TimelinePostCell: UICollectionViewCell {
         backgroundColor = .white
         
         addSubview(postImage)
-
+        // addSubview(userNameAndTimestampLabel)
+        addSubview(usernameLabel)
+        addSubview(timestampLabel)
+        addSubview(likedBar)
         
-        postImage.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-            
-        postImage.addSubview(userNameAndTimestampLabel)
-        postImage.addSubview(likedButton)
+        postImage.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: nil, paddingTop: 15, paddingLeft: 10, paddingBottom: 15, paddingRight: 0, width: frame.height - 30, height: 0)
         
-        userNameAndTimestampLabel.anchor(top: nil, left: postImage.leftAnchor, bottom: postImage.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 8, paddingBottom: 8, paddingRight: 0, width: 0, height: 0)
+//        userNameAndTimestampLabel.anchor(top: nil, left: nil, bottom: nil, right: likedBar.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 10, paddingRight: 10, width: 0, height: 0)
+//        userNameAndTimestampLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         
-        likedButton.anchor(top: nil, left: nil, bottom: postImage.bottomAnchor, right: postImage.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 8, paddingRight: 8, width: 20, height: 20)
+        usernameLabel.anchor(top: nil, left: postImage.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        usernameLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        
+        timestampLabel.anchor(top: nil, left: nil, bottom: nil, right: likedBar.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 15, width: 0, height: 0)
+        timestampLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        
+        likedBar.anchor(top: topAnchor, left: nil, bottom: bottomAnchor, right: rightAnchor, paddingTop: 10, paddingLeft: 0, paddingBottom: 10, paddingRight: 10, width: 5, height: 0)
+        
+        let bottomSeperator = UIView()
+        bottomSeperator.backgroundColor = .mainGray()
+        addSubview(bottomSeperator)
+        bottomSeperator.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
     }
     
     required init?(coder: NSCoder) {

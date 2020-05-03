@@ -141,7 +141,7 @@ class SignupViewController: UIViewController {
     }
     
     let signupButton: UIButton = {
-       let btn = UIButton()
+        let btn = UIButton(type: .system)
         
         btn.isEnabled = false
         btn.setTitle("Sign Up", for: .normal)
@@ -168,7 +168,7 @@ class SignupViewController: UIViewController {
         guard let retypePasswordText = retypePasswordTextField.text else { return }
         
         if(passwordText != retypePasswordText) {
-            self.errorMessageLabel.attributedText = NSMutableAttributedString(string: "Passwords do not match!", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.theRed()])
+            self.errorMessageLabel.attributedText = NSMutableAttributedString(string: "Passwords do not match!", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.mainRed()])
             self.errorMessageLabel.isHidden = false
         } else {
             Auth.auth().createUser(withEmail: emailText, password: passwordText, completion: { (user: AuthDataResult?, error: Error?) in

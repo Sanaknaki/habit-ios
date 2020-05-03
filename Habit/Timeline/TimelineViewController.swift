@@ -20,8 +20,6 @@ class TimelineViewController: UICollectionViewController, UICollectionViewDelega
         
         NotificationCenter.default.addObserver(self, selector: #selector(handleUpdateFeed), name: PostViewController.updateFeedNotificationName, object: nil)
         
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        
         // Refresh
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
@@ -149,14 +147,14 @@ class TimelineViewController: UICollectionViewController, UICollectionViewDelega
         }
     }
     
-    // Right/Left spacing
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 10
-    }
+//     Right/Left spacing
+//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+//        return 10
+//    }
 
     // Up/Down spacing
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 10
+        return 0
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -164,8 +162,8 @@ class TimelineViewController: UICollectionViewController, UICollectionViewDelega
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = ((view.frame.width-10) / 2)
-        let height = ((view.frame.height-10) / 3)
+        let width = ((view.frame.width))
+        let height = ((view.frame.height) / 8)
         
         return CGSize(width: width, height: height)
     }
@@ -178,18 +176,26 @@ class TimelineViewController: UICollectionViewController, UICollectionViewDelega
         }
         
         cell.post = posts[indexPath.item]
-        
+
         return cell
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let id = posts[indexPath.item].id else { return }
+        let username = posts[indexPath.item].user.username
+        let timestamp = posts[indexPath.item].creationDate
         
         let containerView = PostViewController()
         
         containerView.previewImageView.loadImage(urlString: posts[indexPath.item].imageUrl)
         containerView.postId = id
         containerView.hasLiked = posts[indexPath.item].hasLiked
+        
+        let attributedText = NSMutableAttributedString(string: username + "\n", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16), NSAttributedString.Key.foregroundColor: UIColor.white])
+        
+        attributedText.append(NSAttributedString(string: timestamp.timeAgoDisplay(userDate: false), attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.white]))
+    
+        containerView.usernameAndTimestamp.attributedText = attributedText
         
         let navController = UINavigationController(rootViewController: containerView)
         navController.modalPresentationStyle = .fullScreen
