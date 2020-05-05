@@ -11,8 +11,8 @@
 		2332F675244F3EB600BCBE1B /* ProfileViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2332F674244F3EB600BCBE1B /* ProfileViewHeader.swift */; };
 		2332F678244F64DE00BCBE1B /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2332F677244F64DE00BCBE1B /* CameraController.swift */; };
 		2332F67A244F680D00BCBE1B /* PreviewPhotoContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2332F679244F680D00BCBE1B /* PreviewPhotoContainer.swift */; };
-		2332F67C244F729400BCBE1B /* CustomAnimationPresentor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2332F67B244F729400BCBE1B /* CustomAnimationPresentor.swift */; };
-		2332F67E244F72B000BCBE1B /* CustomAnimationDismisser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2332F67D244F72B000BCBE1B /* CustomAnimationDismisser.swift */; };
+		2332F67C244F729400BCBE1B /* CustomAnimationRightToLeftPresentor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2332F67B244F729400BCBE1B /* CustomAnimationRightToLeftPresentor.swift */; };
+		2332F67E244F72B000BCBE1B /* CustomAnimationRightToLeftDismisser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2332F67D244F72B000BCBE1B /* CustomAnimationRightToLeftDismisser.swift */; };
 		2332F6812450A29700BCBE1B /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2332F6802450A29600BCBE1B /* Post.swift */; };
 		2332F6832450A2B800BCBE1B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2332F6822450A2B800BCBE1B /* User.swift */; };
 		2332F6852450A3C200BCBE1B /* FirebaseExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2332F6842450A3C200BCBE1B /* FirebaseExtensions.swift */; };
@@ -49,8 +49,8 @@
 		2332F674244F3EB600BCBE1B /* ProfileViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewHeader.swift; sourceTree = "<group>"; };
 		2332F677244F64DE00BCBE1B /* CameraController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
 		2332F679244F680D00BCBE1B /* PreviewPhotoContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewPhotoContainer.swift; sourceTree = "<group>"; };
-		2332F67B244F729400BCBE1B /* CustomAnimationPresentor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnimationPresentor.swift; sourceTree = "<group>"; };
-		2332F67D244F72B000BCBE1B /* CustomAnimationDismisser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnimationDismisser.swift; sourceTree = "<group>"; };
+		2332F67B244F729400BCBE1B /* CustomAnimationRightToLeftPresentor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnimationRightToLeftPresentor.swift; sourceTree = "<group>"; };
+		2332F67D244F72B000BCBE1B /* CustomAnimationRightToLeftDismisser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnimationRightToLeftDismisser.swift; sourceTree = "<group>"; };
 		2332F6802450A29600BCBE1B /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		2332F6822450A2B800BCBE1B /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		2332F6842450A3C200BCBE1B /* FirebaseExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseExtensions.swift; sourceTree = "<group>"; };
@@ -58,6 +58,8 @@
 		2332F6892450B60F00BCBE1B /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
 		2341F0A2245A2F7A00435B8D /* GameOverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverViewController.swift; sourceTree = "<group>"; };
 		2341F0A4245B590700435B8D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		2341F0A8245F90B100435B8D /* AvenirNext-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirNext-Regular.ttf"; sourceTree = "<group>"; };
+		2341F0A9245F90B200435B8D /* AvenirNext-DemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirNext-DemiBold.ttf"; sourceTree = "<group>"; };
 		234AAFF224533539009400C0 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		234AAFF424533597009400C0 /* SearchResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
 		234AAFFA245635AF009400C0 /* LoginOrSignUpScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginOrSignUpScreen.swift; sourceTree = "<group>"; };
@@ -103,8 +105,8 @@
 			children = (
 				2332F677244F64DE00BCBE1B /* CameraController.swift */,
 				2332F679244F680D00BCBE1B /* PreviewPhotoContainer.swift */,
-				2332F67B244F729400BCBE1B /* CustomAnimationPresentor.swift */,
-				2332F67D244F72B000BCBE1B /* CustomAnimationDismisser.swift */,
+				2332F67B244F729400BCBE1B /* CustomAnimationRightToLeftPresentor.swift */,
+				2332F67D244F72B000BCBE1B /* CustomAnimationRightToLeftDismisser.swift */,
 			);
 			path = Camera;
 			sourceTree = "<group>";
@@ -132,6 +134,15 @@
 				2341F0A2245A2F7A00435B8D /* GameOverViewController.swift */,
 			);
 			path = GameOver;
+			sourceTree = "<group>";
+		};
+		2341F0A6245F902E00435B8D /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				2341F0A9245F90B200435B8D /* AvenirNext-DemiBold.ttf */,
+				2341F0A8245F90B100435B8D /* AvenirNext-Regular.ttf */,
+			);
+			path = Font;
 			sourceTree = "<group>";
 		};
 		234AAFF1245333BA009400C0 /* Search */ = {
@@ -174,6 +185,7 @@
 		23DF724B2442C1DE0050A7D3 /* Habit */ = {
 			isa = PBXGroup;
 			children = (
+				2341F0A6245F902E00435B8D /* Font */,
 				2332F676244F617300BCBE1B /* Camera */,
 				2341F0A1245A2F5B00435B8D /* GameOver */,
 				234AAFF924563594009400C0 /* LoginSignup */,
@@ -396,10 +408,10 @@
 				23DF72792444BED80050A7D3 /* SignupViewController.swift in Sources */,
 				23DF724D2442C1DE0050A7D3 /* AppDelegate.swift in Sources */,
 				234AAFF524533597009400C0 /* SearchResultCell.swift in Sources */,
-				2332F67C244F729400BCBE1B /* CustomAnimationPresentor.swift in Sources */,
+				2332F67C244F729400BCBE1B /* CustomAnimationRightToLeftPresentor.swift in Sources */,
 				234AAFF324533539009400C0 /* SearchViewController.swift in Sources */,
 				2332F67A244F680D00BCBE1B /* PreviewPhotoContainer.swift in Sources */,
-				2332F67E244F72B000BCBE1B /* CustomAnimationDismisser.swift in Sources */,
+				2332F67E244F72B000BCBE1B /* CustomAnimationRightToLeftDismisser.swift in Sources */,
 				234AAFFB245635AF009400C0 /* LoginOrSignUpScreen.swift in Sources */,
 				2341F0A3245A2F7A00435B8D /* GameOverViewController.swift in Sources */,
 				23DF7286244634ED0050A7D3 /* LoginSignUpInputTextField.swift in Sources */,

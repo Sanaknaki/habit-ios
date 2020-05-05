@@ -10,22 +10,11 @@ import UIKit
 
 class ProfileViewHeader: UICollectionViewCell {
     
-    let usernameLabel: UILabel = {
-        let label = UILabel()
-        
-        label.text = ""
-        
-        label.textColor = .black
-        label.font = UIFont.boldSystemFont(ofSize: 14)
-        
-        return label
-    }()
-    
     let userStatsLabel: UILabel = {
         let label = UILabel()
         
         label.numberOfLines = 0
-        label.textAlignment = .right
+        label.textAlignment = .center
         
         return label
     }()
@@ -33,14 +22,11 @@ class ProfileViewHeader: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        addSubview(usernameLabel)
         addSubview(userStatsLabel)
-        
-        usernameLabel.anchor(top: nil, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 18, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        usernameLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        
-        userStatsLabel.anchor(top: nil, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 18, width: 0, height: 0)
+    
+        userStatsLabel.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         userStatsLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        userStatsLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
     }
     
     required init?(coder: NSCoder) {

@@ -15,7 +15,7 @@ class GameOverViewController: UIViewController {
         let label = UILabel()
         
         label.text = "👋"
-        label.font = UIFont.systemFont(ofSize: 75)
+        label.font = UIFont(name: "AvenirNext-Regular", size: 75)
         
         return label
     }()
@@ -24,7 +24,7 @@ class GameOverViewController: UIViewController {
         let label = UILabel()
         
         label.text = "Seems like you broke your habit, shame."
-        label.font = UIFont.systemFont(ofSize: 16)
+        label.font = UIFont(name: "AvenirNext-Regular", size: 16)
         label.textColor = .white
         
         return label
@@ -34,7 +34,7 @@ class GameOverViewController: UIViewController {
         let btn = UIButton(type: .system)
         
         btn.setTitle("DELETE MY ACCOUNT", for: .normal)
-        btn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        btn.titleLabel?.font = UIFont(name: "AvenirNext-DemiBold", size: 16)
         btn.setTitleColor(.white, for: .normal)
         btn.backgroundColor = .mainRed()
         btn.addTarget(self, action: #selector(handleAccountDeletion), for: .touchUpInside)

@@ -118,11 +118,7 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(handleUpdateFeed), name: PostViewController.updateFeedNotificationName, object: nil)
-        
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        
+            
         collectionView.backgroundColor = .white
         collectionView.register(ProfileViewHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
         collectionView.register(ProfileViewPostCell.self, forCellWithReuseIdentifier: cellId)
@@ -159,6 +155,7 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
     }
     
     func setupNavigationBar() {
+        self.navigationController?.navigationBar.shadowImage = UIImage()
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "back").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleBackClick))
         navigationItem.setHidesBackButton(true, animated: false)
         
@@ -199,13 +196,13 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
         
         // Downcast to be the UserProfileHeader
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerId, for: indexPath) as! ProfileViewHeader
-        
-        header.usernameLabel.text = user?.username
-        
+                
+        let username = user?.username ?? ""
         let joinedDate = user?.joinedDate.timeAgoDisplay(userDate: true) ?? ""
         
-        let attributedText = NSMutableAttributedString(string: joinedDate + "\n", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.mainGray()])
-        attributedText.append(NSAttributedString(string: "0 followers", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.mainGray()]))
+        let attributedText = NSMutableAttributedString(string: username + "\n", attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-DemiBold", size: 15), NSAttributedString.Key.foregroundColor: UIColor.black])
+        attributedText.append(NSMutableAttributedString(string: joinedDate + "\n", attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-Regular", size: 14), NSAttributedString.Key.foregroundColor: UIColor.mainGray()]))
+        attributedText.append(NSAttributedString(string: "0 followers", attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-Regular", size: 14), NSAttributedString.Key.foregroundColor: UIColor.mainGray()]))
         
         header.userStatsLabel.attributedText = attributedText
         
@@ -218,7 +215,7 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
 //    }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        UIEdgeInsets(top: 5.0, left: 5.0, bottom: 5.0, right: 5.0)
+        UIEdgeInsets(top: 0.0, left: 5.0, bottom: 10.0, right: 5.0)
     }
     
     // Right/Left spacing
@@ -232,22 +229,23 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = ((view.frame.width / 3)) - 10
-        let height = ((view.frame.height) / 3.5) - 10
+        let height = ((view.frame.height) / 3.5)
         
         return CGSize(width: width, height: height)
     }
 
-    var p = 1
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         // Fire off paginate call
 //        if indexPath.item == self.posts.count - 1 && !isFinishedPaging {
 //            paginatePosts()
 //        }
         
+        print(indexPath.item)
+        
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ProfileViewPostCell
         
         cell.post = posts[indexPath.item]
-
+        
         return cell
     }
     
@@ -278,12 +276,12 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
                 
                 guard let uid = Auth.auth().currentUser?.uid else { return }
                 
-                Database.database().reference().child("likes").child(key).child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
+                Database.database().reference().child("views").child(key).child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
                     
                     if let value = snapshot.value as? Int, value == 1 {
-                        post.hasLiked = true
+                        post.hasViewed = true
                     } else {
-                        post.hasLiked = false
+                        post.hasViewed = false
                     }
                     
                     
@@ -357,11 +355,11 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
         let containerView = PostViewController()
         containerView.previewImageView.loadImage(urlString: posts[indexPath.item].imageUrl)
         containerView.postId = id
-        containerView.hasLiked = posts[indexPath.item].hasLiked
+        containerView.hasViewed = posts[indexPath.item].hasViewed
         
-        let attributedText = NSMutableAttributedString(string: username + "\n", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16), NSAttributedString.Key.foregroundColor: UIColor.white])
+        let attributedText = NSMutableAttributedString(string: username + "\n", attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-DemiBold", size: 16), NSAttributedString.Key.foregroundColor: UIColor.white])
         
-        attributedText.append(NSAttributedString(string: timestamp.timeAgoDisplay(userDate: false), attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.white]))
+        attributedText.append(NSAttributedString(string: timestamp.timeAgoDisplay(userDate: false), attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-Regular", size: 14), NSAttributedString.Key.foregroundColor: UIColor.white]))
     
         containerView.usernameAndTimestamp.attributedText = attributedText
         

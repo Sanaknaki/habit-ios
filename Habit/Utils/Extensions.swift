@@ -72,7 +72,6 @@ extension Date {
         let hour = 60 * minute
         let day = 24 * hour
         let week = 7 * day
-        let month = 4 * week
 
         let quotient: Int
         let unit: String
@@ -81,34 +80,29 @@ extension Date {
             unit = "s"
         } else if secondsAgo < hour {
             quotient = secondsAgo / minute
-            unit = "min"
+            unit = "m"
         } else if secondsAgo < day {
             quotient = secondsAgo / hour
-            unit = "hr"
+            unit = "h"
         } else if secondsAgo < week {
             quotient = secondsAgo / day
-            if(quotient == 1 ) {
-                unit = "yesterday"
-            } else {
-                unit = "d"
-            }
-        } else if secondsAgo < month {
-            quotient = secondsAgo / week
-            unit = "wk"
+            unit = "d"
         } else {
-            quotient = secondsAgo / month
-            unit = "mth"
+            quotient = secondsAgo / week
+            unit = "w"
         }
 
         if(unit == "yesterday") {
             return unit
         }
         
-        if(userDate) {
-            return "\(quotient)\(unit)\(quotient == 1 ? "" : "s")"
-        } else {
-            return "\(quotient)\(unit) ago"
-        }
+        return "\(quotient)\(unit)"
+        
+//        if(userDate) {
+//            return "\(quotient)\(unit)"
+//        } else {
+//            return "\(quotient)\(unit) ago"
+//        }
         
     }
 }

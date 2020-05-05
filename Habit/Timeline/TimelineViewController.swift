@@ -27,6 +27,7 @@ class TimelineViewController: UICollectionViewController, UICollectionViewDelega
         
         collectionView.backgroundColor = .white
         collectionView.register(TimelinePostCell.self, forCellWithReuseIdentifier: cellId)
+        
         setupNavigationBar()
         
         fetchAllPosts()
@@ -47,9 +48,10 @@ class TimelineViewController: UICollectionViewController, UICollectionViewDelega
     }
     
     fileprivate func setupNavigationBar() {
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.barTintColor = .white
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "search").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleSearchClick))
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "profile").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleProfileClick))
-        self.navigationController?.navigationBar.barTintColor = .white
     }
     
     @objc func handleSearchClick() {
@@ -119,27 +121,29 @@ class TimelineViewController: UICollectionViewController, UICollectionViewDelega
                 post.id = key
                 
                 guard let uid = Auth.auth().currentUser?.uid else { return }
-                
-                Database.database().reference().child("likes").child(key).child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
+                                                
+                Database.database().reference().child("views").child(key).observeSingleEvent(of: .value, with: { (snapshot) in
+                    let hasViewed = snapshot.childSnapshot(forPath: uid).value
+                    let views =  snapshot.childrenCount
                     
-                    if let value = snapshot.value as? Int, value == 1 {
-                        post.hasLiked = true
+                    post.views = String(views)
+                    
+                    if let value = hasViewed as? Int, value == 1 {
+                        post.hasViewed = true
                     } else {
-                        post.hasLiked = false
+                        post.hasViewed = false
                     }
                     
-                    
-                    self.posts.append(post)
-                    
-                    // Show earliest posts first
-                    self.posts.sort(by: { (p1, p2) -> Bool in
-                        return p1.creationDate.compare(p2.creationDate) == .orderedDescending
-                    })
-                    
-                    self.collectionView?.reloadData()
-                    
+                self.posts.append(post)
+
+                // Show earliest posts first
+                self.posts.sort(by: { (p1, p2) -> Bool in
+                    return p1.creationDate.compare(p2.creationDate) == .orderedDescending
+                })
+
+                self.collectionView?.reloadData()
                 }, withCancel: { (err) in
-                    print("Failed to fetch like info for post: ", err)
+                    print("Failed to fetch info for post: ", err)
                 })
             })
         }) { (err) in
@@ -147,11 +151,6 @@ class TimelineViewController: UICollectionViewController, UICollectionViewDelega
         }
     }
     
-//     Right/Left spacing
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-//        return 10
-//    }
-
     // Up/Down spacing
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0
@@ -174,12 +173,13 @@ class TimelineViewController: UICollectionViewController, UICollectionViewDelega
         if(posts.count == 0) {
             return cell
         }
-        
+
         cell.post = posts[indexPath.item]
 
         return cell
     }
     
+    var hasLiked = false
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let id = posts[indexPath.item].id else { return }
         let username = posts[indexPath.item].user.username
@@ -189,16 +189,33 @@ class TimelineViewController: UICollectionViewController, UICollectionViewDelega
         
         containerView.previewImageView.loadImage(urlString: posts[indexPath.item].imageUrl)
         containerView.postId = id
-        containerView.hasLiked = posts[indexPath.item].hasLiked
+        containerView.hasViewed = posts[indexPath.item].hasViewed
         
-        let attributedText = NSMutableAttributedString(string: username + "\n", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 16), NSAttributedString.Key.foregroundColor: UIColor.white])
+        let attributedText = NSMutableAttributedString(string: username + "\n", attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-DemiBold", size: 18), NSAttributedString.Key.foregroundColor: UIColor.white])
         
-        attributedText.append(NSAttributedString(string: timestamp.timeAgoDisplay(userDate: false), attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.white]))
+        attributedText.append(NSAttributedString(string: timestamp.timeAgoDisplay(userDate: false), attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-Regular", size: 14), NSAttributedString.Key.foregroundColor: UIColor.white]))
     
         containerView.usernameAndTimestamp.attributedText = attributedText
         
         let navController = UINavigationController(rootViewController: containerView)
         navController.modalPresentationStyle = .fullScreen
         self.present(navController, animated:true, completion: nil)
+        
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        
+        if(hasLiked == false) {
+            let values = [uid: 1]
+            
+            Database.database().reference().child("views").child(id).updateChildValues(values) { (err, ref) in
+                if let err = err {
+                    print("Failed to like post: ", err)
+                    return
+                }
+                
+                print("Successfully liked post!")
+                
+                self.hasLiked = !self.hasLiked
+            }
+        }
     }
 }

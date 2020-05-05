@@ -18,3 +18,8 @@
 [X] Show that you liked a post.
 
 [X] Handle Refresh on timeline.
+
+[X] When posting a new pic, update profile view as well.
+[X] Remove like feature, a "view" is now what matters now as a "like".
+[X] Font changed to Avenir Next.
+[X] Set every view to Avenir Next font.

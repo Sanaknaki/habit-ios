@@ -76,8 +76,8 @@ class CameraController: UIViewController, AVCapturePhotoCaptureDelegate, UIViewC
         setupHUD()
     }
     
-    let customAnimationPresentor = CustomAnimationPresentor()
-    let customAnimationDismisser = CustomAnimationDismisser()
+    let customAnimationPresentor = CustomAnimationRightToLeftPresentor()
+    let customAnimationDismisser = CustomAnimationRightToLeftDismisser()
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         return customAnimationPresentor
     }
@@ -97,13 +97,12 @@ class CameraController: UIViewController, AVCapturePhotoCaptureDelegate, UIViewC
         capturePhotoButton.anchor(top: nil, left: nil, bottom: view.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 36, paddingRight: 0, width: 80, height: 80)
         capturePhotoButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
-        dismissButton.anchor(top: view.topAnchor, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: 36, paddingLeft: 0, paddingBottom: 0, paddingRight: 36, width: 20, height: 20)
+        dismissButton.anchor(top: view.topAnchor, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: 60, paddingLeft: 0, paddingBottom: 0, paddingRight: 24, width: 20, height: 20)
     }
     
     let output = AVCapturePhotoOutput()
     fileprivate func setupCaptureSession() {
         let captureSession = AVCaptureSession()
-        
         // 1. Setup Inputs
         guard let captureDevice = AVCaptureDevice.default(for: AVMediaType.video) else { return }
         
@@ -129,6 +128,31 @@ class CameraController: UIViewController, AVCapturePhotoCaptureDelegate, UIViewC
         view.layer.addSublayer(previewLayer)
         
         captureSession.startRunning()
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {        
+        let screenSize = view.bounds.size
+        
+        if let touchPoint = touches.first {
+            let x = touchPoint.location(in: view).y / screenSize.height
+            let y = 1.0 - touchPoint.location(in: view).x / screenSize.width
+            let focusPoint = CGPoint(x: x, y: y)
+
+            if let device = AVCaptureDevice.default(for: AVMediaType.video) {
+                do {
+                    try device.lockForConfiguration()
+
+                    device.focusPointOfInterest = focusPoint
+                    device.focusMode = .autoFocus
+                    device.exposurePointOfInterest = focusPoint
+                    device.exposureMode = AVCaptureDevice.ExposureMode.continuousAutoExposure
+                    device.unlockForConfiguration()
+                }
+                catch {
+                    // just ignore
+                }
+            }
+        }
     }
 }
 

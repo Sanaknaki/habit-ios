@@ -19,9 +19,9 @@ class TimelinePostCell: UICollectionViewCell {
             
             // Username and post date for post
             
-            let attributedText = NSMutableAttributedString(string: post.user.username + "\n", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 18), NSAttributedString.Key.foregroundColor: UIColor.black])
+            let attributedText = NSMutableAttributedString(string: post.user.username + "\n", attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-DemiBold", size: 18), NSAttributedString.Key.foregroundColor: UIColor.black])
                 
-            attributedText.append(NSAttributedString(string: post.creationDate.timeAgoDisplay(userDate: false), attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 10), NSAttributedString.Key.foregroundColor: UIColor.mainGray()]))
+            attributedText.append(NSAttributedString(string: post.creationDate.timeAgoDisplay(userDate: false), attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-Regular", size: 10), NSAttributedString.Key.foregroundColor: UIColor.mainGray()]))
         
             userNameAndTimestampLabel.attributedText = attributedText
             
@@ -31,7 +31,10 @@ class TimelinePostCell: UICollectionViewCell {
                         
             postImage.layer.cornerRadius = (frame.height - 30) / 2
             
-            likedBar.layer.backgroundColor = (post.hasLiked == true) ? UIColor.mainBlue().cgColor : UIColor.mainGray().cgColor
+            viewIcon.image = (post.hasViewed == true) ? #imageLiteral(resourceName: "viewed") : #imageLiteral(resourceName: "view")
+
+            viewCount.text = post.views
+            viewCount.textColor = (post.hasViewed == true) ? .mainBlue() : .mainGray()
         }
     }
 
@@ -40,7 +43,7 @@ class TimelinePostCell: UICollectionViewCell {
                 
         label.numberOfLines = 0
         label.textColor = .mainGray()
-        label.font = UIFont.systemFont(ofSize: 12)
+        label.font = UIFont(name: "AvenirNext-Regular", size: 12)
         
         return label
     }()
@@ -50,7 +53,8 @@ class TimelinePostCell: UICollectionViewCell {
                 
         label.numberOfLines = 0
         label.textColor = .black
-        label.font = UIFont.boldSystemFont(ofSize: 16)
+        
+        label.font = UIFont(name: "AvenirNext-DemiBold", size: 16)
         
         return label
     }()
@@ -61,7 +65,7 @@ class TimelinePostCell: UICollectionViewCell {
         label.numberOfLines = 0
         label.textAlignment = .right
         
-        label.font = UIFont.systemFont(ofSize: 14)
+        label.font = UIFont(name: "AvenirNext-Regular", size: 14)
         
         return label
     }()
@@ -77,13 +81,20 @@ class TimelinePostCell: UICollectionViewCell {
         
         return postImage
     }()
-
-    let likedBar: UIView = {
-        let view = UIView()
+    
+    let viewCount: UILabel = {
+        let label = UILabel()
         
-        view.backgroundColor = UIColor.mainGray()
-        view.layer.cornerRadius = 2
-        return view
+        label.textAlignment = .right
+        label.font = UIFont(name: "AvenirNext-Regular", size: 10)
+        
+        return label
+    }()
+    
+    let viewIcon: CustomImageView = {
+        let image = CustomImageView()
+                
+        return image
     }()
     
     override init(frame: CGRect) {
@@ -92,23 +103,22 @@ class TimelinePostCell: UICollectionViewCell {
         backgroundColor = .white
         
         addSubview(postImage)
-        // addSubview(userNameAndTimestampLabel)
         addSubview(usernameLabel)
         addSubview(timestampLabel)
-        addSubview(likedBar)
+        addSubview(viewIcon)
+        addSubview(viewCount)
         
         postImage.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: nil, paddingTop: 15, paddingLeft: 10, paddingBottom: 15, paddingRight: 0, width: frame.height - 30, height: 0)
         
-//        userNameAndTimestampLabel.anchor(top: nil, left: nil, bottom: nil, right: likedBar.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 10, paddingRight: 10, width: 0, height: 0)
-//        userNameAndTimestampLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        usernameLabel.anchor(top: postImage.topAnchor, left: postImage.rightAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
         
-        usernameLabel.anchor(top: nil, left: postImage.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        usernameLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        
-        timestampLabel.anchor(top: nil, left: nil, bottom: nil, right: likedBar.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 15, width: 0, height: 0)
-        timestampLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        
-        likedBar.anchor(top: topAnchor, left: nil, bottom: bottomAnchor, right: rightAnchor, paddingTop: 10, paddingLeft: 0, paddingBottom: 10, paddingRight: 10, width: 5, height: 0)
+        timestampLabel.anchor(top: nil, left: postImage.rightAnchor, bottom: postImage.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 15, paddingBottom: 5, paddingRight: 0, width: 0, height: 0)
+            
+        viewIcon.anchor(top: nil, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 15, width: 18, height: 19)
+        viewIcon.centerYAnchor.constraint(equalTo: postImage.centerYAnchor).isActive = true
+            
+        viewCount.anchor(top: nil, left: nil, bottom: nil, right: viewIcon.leftAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 5, width: 0, height: 0)
+        viewCount.centerYAnchor.constraint(equalTo: viewIcon.centerYAnchor).isActive = true
         
         let bottomSeperator = UIView()
         bottomSeperator.backgroundColor = .mainGray()

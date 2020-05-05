@@ -16,8 +16,8 @@ class SignupViewController: UIViewController {
         
         label.text = "Sign Up"
         label.textColor = .mainBlue()
-        label.font = UIFont.boldSystemFont(ofSize: 22)
-         
+        label.font = UIFont(name: "AvenirNext-DemiBold", size: 22)
+        
         return label
     }()
     
@@ -28,20 +28,20 @@ class SignupViewController: UIViewController {
     }()
     
     let usernameLabel: UILabel = {
-        let lbl = UILabel()
+        let label = UILabel()
         
-        lbl.text = "Username"
+        label.text = "Username"
         
-        lbl.textColor = .mainGray()
-        lbl.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = .mainGray()
+        label.font = UIFont(name: "AvenirNext-Regular", size: 14)
         
-        return lbl
+        return label
     }()
     
     let usernameTextField: LoginSignUpInputTextField = {
         let textfield = LoginSignUpInputTextField()
         
-        textfield.attributedPlaceholder = NSMutableAttributedString(string: "Username", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.white])
+        textfield.attributedPlaceholder = NSMutableAttributedString(string: "Username", attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-Regular", size: 14), NSAttributedString.Key.foregroundColor: UIColor.white])
         
         return textfield
     }()
@@ -53,20 +53,20 @@ class SignupViewController: UIViewController {
     }()
     
     let emailLabel: UILabel = {
-        let lbl = UILabel()
+        let label = UILabel()
         
-        lbl.text = "Email"
+        label.text = "Email"
         
-        lbl.textColor = .mainGray()
-        lbl.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = .mainGray()
+        label.font = UIFont(name: "AvenirNext-Regular", size: 14)
         
-        return lbl
+        return label
     }()
     
     let emailTextField: LoginSignUpInputTextField = {
         let textfield = LoginSignUpInputTextField()
         
-        textfield.attributedPlaceholder = NSMutableAttributedString(string: "Email", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.white])
+        textfield.attributedPlaceholder = NSMutableAttributedString(string: "Email", attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-Regular", size: 14), NSAttributedString.Key.foregroundColor: UIColor.white])
         
         textfield.addTarget(self, action: #selector(handleTextInputChange), for: .editingChanged)
         
@@ -80,14 +80,14 @@ class SignupViewController: UIViewController {
     }()
     
     let passwordLabel: UILabel = {
-        let lbl = UILabel()
+        let label = UILabel()
         
-        lbl.text = "Password"
+        label.text = "Password"
         
-        lbl.textColor = .mainGray()
-        lbl.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = .mainGray()
+        label.font = UIFont(name: "AvenirNext-Regular", size: 14)
         
-        return lbl
+        return label
     }()
     
     let passwordTextField: LoginSignUpInputTextField = {
@@ -107,14 +107,14 @@ class SignupViewController: UIViewController {
     }()
     
     let retypePasswordLabel: UILabel = {
-        let lbl = UILabel()
+        let label = UILabel()
         
-        lbl.text = "Retype Password"
+        label.text = "Retype Password"
         
-        lbl.textColor = .mainGray()
-        lbl.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = .mainGray()
+        label.font = UIFont(name: "AvenirNext-Regular", size: 14)
         
-        return lbl
+        return label
     }()
     
     let retypePasswordTextField: LoginSignUpInputTextField = {
@@ -145,7 +145,7 @@ class SignupViewController: UIViewController {
         
         btn.isEnabled = false
         btn.setTitle("Sign Up", for: .normal)
-        btn.titleLabel?.font =  UIFont.systemFont(ofSize: 15)
+        btn.titleLabel?.font = UIFont(name: "AvenirNext-Regular", size: 15)
         btn.addTarget(self, action: #selector(handleSignUp), for: .touchUpInside)
         
         return btn
@@ -168,7 +168,7 @@ class SignupViewController: UIViewController {
         guard let retypePasswordText = retypePasswordTextField.text else { return }
         
         if(passwordText != retypePasswordText) {
-            self.errorMessageLabel.attributedText = NSMutableAttributedString(string: "Passwords do not match!", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.mainRed()])
+            self.errorMessageLabel.attributedText = NSMutableAttributedString(string: "Passwords do not match!", attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-Regular", size: 14), NSAttributedString.Key.foregroundColor: UIColor.mainRed()])
             self.errorMessageLabel.isHidden = false
         } else {
             Auth.auth().createUser(withEmail: emailText, password: passwordText, completion: { (user: AuthDataResult?, error: Error?) in

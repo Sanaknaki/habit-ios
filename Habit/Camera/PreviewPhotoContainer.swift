@@ -53,13 +53,15 @@ class PreviewPhotoContainer: UIView {
         btn.layer.borderWidth = 2
         
         btn.setTitle("POST", for: .normal)
-        btn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        btn.titleLabel?.font = UIFont(name: "AvenirNext-DemiBold", size: 14)
         btn.setTitleColor(.white, for: .normal)
         
         
         btn.addTarget(self, action: #selector(handlePost), for: .touchUpInside)
        return btn
     }()
+    
+    static let updateFeedNotificationName = NSNotification.Name(rawValue: "UpdateFeed")
     
     @objc func handlePost() {
         guard let image = previewImageView.image else { return }
@@ -77,7 +79,7 @@ class PreviewPhotoContainer: UIView {
                 DispatchQueue.main.async {
                     let label = UILabel()
                     label.text = "Couldn't post photo, try again later!"
-                    label.font = UIFont.boldSystemFont(ofSize: 14)
+                    label.font = UIFont(name: "AvenirNext-DemiBold", size: 14)
                     label.textColor = .white
                     label.textAlignment = .center
                     label.numberOfLines = 0
@@ -151,7 +153,7 @@ class PreviewPhotoContainer: UIView {
             self.handleCancel()
             
             // Notified app with a specific name to update feed given the name, must add observer in the HomeController
-            // NotificationCenter.default.post(name: SharePhotoController.updateFeedNotificationName, object: nil)
+            NotificationCenter.default.post(name: PreviewPhotoContainer.updateFeedNotificationName, object: nil)
         }
     }
     
@@ -174,7 +176,7 @@ class PreviewPhotoContainer: UIView {
             DispatchQueue.main.async {
                 let savedLabel = UILabel()
                 savedLabel.text = "Saved Successfully!"
-                savedLabel.font = UIFont.boldSystemFont(ofSize: 14)
+                savedLabel.font = UIFont(name: "AvenirNext-DemiBold", size: 14)
                 savedLabel.textColor = .white
                 savedLabel.textAlignment = .center
                 savedLabel.numberOfLines = 0

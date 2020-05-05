@@ -16,12 +16,12 @@ struct Post {
     let imageUrl: String
     let creationDate: Date
     
-    var hasLiked = false
+    var views: String?
+    var hasViewed = false
     
     init(user: User, dictionary: [String: Any]) {
         self.user = user
         self.imageUrl = dictionary["imageUrl"] as? String ?? ""
-        
         let secondsFrom1970 = dictionary["creationDate"] as? Double ?? 0
         self.creationDate = Date(timeIntervalSince1970: secondsFrom1970)
     }

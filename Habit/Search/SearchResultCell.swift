@@ -16,21 +16,22 @@ class SearchResultCell: UICollectionViewCell {
             
             guard let joinedDate = user?.joinedDate.timeAgoDisplay(userDate: true) else { return }
             
-            let attributedText = NSMutableAttributedString(string: joinedDate + "\n", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.black])
+            let attributedText = NSMutableAttributedString(string: joinedDate + "\n", attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-Regular", size: 14), NSAttributedString.Key.foregroundColor: UIColor.black])
             
-            attributedText.append(NSAttributedString(string: "0 followers", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.black]))
+            attributedText.append(NSAttributedString(string: "0 followers", attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-Regular", size: 14), NSAttributedString.Key.foregroundColor: UIColor.black]))
         
             userStatsLabel.attributedText = attributedText
         }
     }
     
     let usernameLabel: UILabel = {
-        let lbl = UILabel()
+        let label = UILabel()
         
-        lbl.text = "Username"
-        lbl.font = UIFont.boldSystemFont(ofSize: 14)
+        label.text = "Username"
+
+        label.font = UIFont(name: "AvenirNext-DemiBold", size: 14)
         
-        return lbl
+        return label
     }()
     
     let userStatsLabel: UILabel = {

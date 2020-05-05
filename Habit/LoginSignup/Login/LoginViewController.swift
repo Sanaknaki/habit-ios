@@ -16,31 +16,31 @@ class LoginViewController: UIViewController {
         
         label.text = "Log In"
         label.textColor = .mainBlue()
-        label.font = UIFont.boldSystemFont(ofSize: 22)
-         
+        label.font = UIFont(name: "AvenirNext-DemiBold", size: 22)
+        
         return label
     }()
     
     let emailLabel: UILabel = {
-        let lbl = UILabel()
+        let label = UILabel()
         
-        lbl.text = "Email"
+        label.text = "Email"
         
-        lbl.textColor = .mainGray()
-        lbl.font = UIFont.systemFont(ofSize: 14)
-        
-        return lbl
+        label.textColor = .mainGray()
+        label.font = UIFont(name: "AvenirNext-Regular", size: 12)
+
+        return label
     }()
     
     let passwordLabel: UILabel = {
-        let lbl = UILabel()
+        let label = UILabel()
         
-        lbl.text = "Password"
+        label.text = "Password"
         
-        lbl.textColor = .mainGray()
-        lbl.font = UIFont.systemFont(ofSize: 12)
+        label.textColor = .mainGray()
+        label.font = UIFont(name: "AvenirNext-Regular", size: 12)
         
-        return lbl
+        return label
     }()
     
     let emailTextField: LoginSignUpInputTextField = {
@@ -93,7 +93,7 @@ class LoginViewController: UIViewController {
         
         btn.isEnabled = false
         btn.setTitle("Login", for: .normal)
-        btn.titleLabel?.font =  UIFont.systemFont(ofSize: 15)
+        btn.titleLabel?.font = UIFont(name: "AvenirNext-Regular", size: 15)
         btn.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
         
         return btn
@@ -106,7 +106,7 @@ class LoginViewController: UIViewController {
         Auth.auth().signIn(withEmail: email, password: password) { (user: AuthDataResult?, err: Error?) in
             if let err = err {
                 print("Failed to perform login : ", err)
-                self.errorMessageLabel.attributedText = NSMutableAttributedString(string: err.localizedDescription, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.mainRed()])
+                self.errorMessageLabel.attributedText = NSMutableAttributedString(string: err.localizedDescription, attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-Regular", size: 14), NSAttributedString.Key.foregroundColor: UIColor.mainRed()])
                 self.errorMessageLabel.isHidden = false
                 return
             }

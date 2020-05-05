@@ -91,13 +91,13 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
         let exploreNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "explore").withRenderingMode(.alwaysOriginal), selectedImage: #imageLiteral(resourceName: "explore-clicked").withRenderingMode(.alwaysOriginal), rootViewController: UICollectionViewController(collectionViewLayout: UICollectionViewFlowLayout()))
         
         tabBar.isTranslucent = false
-        tabBar.tintColor = .white
         tabBar.backgroundColor = .white
+        tabBar.clipsToBounds = true
         
         // Takes in an array of Nav Controllers, that show their respective ViewController
         viewControllers = [timelineNavController,
-                           captureNavController,
-                           exploreNavController]
+                           captureNavController
+                           /*exploreNavController*/]
         
         // Modify tab bar insets
         guard let items = tabBar.items else { return }

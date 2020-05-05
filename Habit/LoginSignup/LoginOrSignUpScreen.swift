@@ -30,7 +30,7 @@ class LoginOrSignUpScreen: UIViewController {
         let btn = UIButton(type: .system)
         
         btn.setTitle("Log In", for: .normal)
-        btn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        btn.titleLabel?.font = UIFont(name: "AvenirNext-DemiBold", size: 16)
         btn.setTitleColor(.white, for: .normal)
         btn.backgroundColor = .lightMainBlue()
         
@@ -49,7 +49,7 @@ class LoginOrSignUpScreen: UIViewController {
         let btn = UIButton(type: .system)
         
         btn.setTitle("Sign Up", for: .normal)
-        btn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        btn.titleLabel?.font = UIFont(name: "AvenirNext-DemiBold", size: 16)
         btn.setTitleColor(.mainGray(), for: .normal)
         btn.backgroundColor = .white
         
