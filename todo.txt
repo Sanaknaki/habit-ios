@@ -26,3 +26,5 @@
 
 [X] Make it so that if you click the PHOTO in a cell, the postViewController shows.
 [X] Make it so that if you click the USERNAME in a cell, the userProfile shows.
+
+[X] If you're on your own page, you can view all your posts & if on someone else's account, you only see their latest post.

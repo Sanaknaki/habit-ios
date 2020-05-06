@@ -218,11 +218,6 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
         UIEdgeInsets(top: 0.0, left: 5.0, bottom: 10.0, right: 5.0)
     }
     
-    // Right/Left spacing
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-//        return 5
-//    }
-    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return posts.count
     }
@@ -235,14 +230,9 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        // Fire off paginate call
-//        if indexPath.item == self.posts.count - 1 && !isFinishedPaging {
-//            paginatePosts()
-//        }
-                
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ProfileViewPostCell
         
-        if(indexPath.item != 0) {
+        if(indexPath.item != 0 && ((Auth.auth().currentUser?.uid) != userId)) {
             cell.opaqueCover.backgroundColor = .mainGray()
         }
         
@@ -350,7 +340,7 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if(indexPath.item == 0) {
+        if(indexPath.item == 0 || ((Auth.auth().currentUser?.uid) == userId)) {
             guard let id = posts[indexPath.item].id else { return }
             let username = posts[indexPath.item].user.username
             let timestamp = posts[indexPath.item].creationDate
