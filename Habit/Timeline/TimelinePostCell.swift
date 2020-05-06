@@ -36,9 +36,6 @@ class TimelinePostCell: UICollectionViewCell {
             viewCount.text = post.views
             viewCount.textColor = (post.hasViewed == true) ? .mainBlue() : .mainGray()
             
-            saveIcon.image = (post.hasViewed == false) ? #imageLiteral(resourceName: "saved-stat") : #imageLiteral(resourceName: "save-stat")
-            viewCount1.textColor = (post.hasViewed == false) ? .mainBlue() : .mainGray()
-            
             let postImageGesture = UITapGestureRecognizer(target: self, action: #selector(handleImageClick))
             let usernameGesture = UITapGestureRecognizer(target: self, action: #selector(handleUsernameClick))
             
@@ -49,7 +46,13 @@ class TimelinePostCell: UICollectionViewCell {
             usernameLabel.addGestureRecognizer(usernameGesture)
         }
     }
-
+    
+    let usernameTimeStampView: UIView = {
+        let view = UIView()
+                
+        return view
+    }()
+    
     let timestampLabel: UILabel = {
         let label = UILabel()
                 
@@ -75,6 +78,12 @@ class TimelinePostCell: UICollectionViewCell {
         guard let user = post?.user else { return }
         delegate?.didClickUsername(user: user)
     }
+    
+    let viewStatsView: UIView = {
+       let view = UIView()
+    
+        return view
+    }()
     
     let postImage: CustomImageView = {
         let postImage = CustomImageView()
@@ -102,53 +111,20 @@ class TimelinePostCell: UICollectionViewCell {
         return label
     }()
     
-    let viewCount1: UILabel = {
-        let label = UILabel()
-        
-        label.text = "0"
-        label.textAlignment = .right
-        label.font = UIFont(name: "AvenirNext-Regular", size: 12)
-        
-        return label
-    }()
-    
     let viewIcon: CustomImageView = {
         let image = CustomImageView()
                 
         return image
     }()
     
-    let saveIcon: CustomImageView = {
-        let image = CustomImageView()
-        
-        return image
-    }()
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        backgroundColor = .white
-        
         addSubview(postImage)
-        addSubview(usernameLabel)
-        addSubview(timestampLabel)
-//        addSubview(viewIcon)
-//        addSubview(viewCount)
         
         postImage.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: nil, paddingTop: 15, paddingLeft: 10, paddingBottom: 15, paddingRight: 0, width: frame.height - 30, height: 0)
         
-        usernameLabel.anchor(top: postImage.topAnchor, left: postImage.rightAnchor, bottom: nil, right: nil, paddingTop: 5, paddingLeft: 15, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        
-        timestampLabel.anchor(top: nil, left: postImage.rightAnchor, bottom: postImage.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 15, paddingBottom: 5, paddingRight: 0, width: 0, height: 0)
-//        timestampLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        
         setupPostStats()
-//
-//        viewCount.anchor(top: nil, left: postImage.rightAnchor, bottom: postImage.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 15, paddingBottom: 10, paddingRight: 0, width: 0, height: 0)
-//
-//        viewIcon.anchor(top: nil, left: viewCount.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 3, paddingBottom: 0, paddingRight: 0, width: 18, height: 19)
-//        viewIcon.centerYAnchor.constraint(equalTo: viewCount.centerYAnchor).isActive = true
-            
+        setupUserNameAndTimeStamp()
         
         let bottomSeperator = UIView()
         bottomSeperator.backgroundColor = .mainGray()
@@ -157,30 +133,37 @@ class TimelinePostCell: UICollectionViewCell {
     }
     
     fileprivate func setupPostStats() {
-        let viewsView = UIView()
-        viewsView.addSubview(viewCount)
-        viewsView.addSubview(viewIcon)
+        viewStatsView.addSubview(viewIcon)
+        viewStatsView.addSubview(viewCount)
         
-        viewCount.anchor(top: viewsView.topAnchor, left: viewsView.leftAnchor, bottom: viewsView.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        viewIcon.anchor(top: nil, left: nil, bottom: nil, right: viewStatsView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 24, height: 25)
+        viewIcon.centerYAnchor.constraint(equalTo: viewStatsView.centerYAnchor).isActive = true
+    
+        viewCount.anchor(top: viewIcon.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        viewCount.centerXAnchor.constraint(equalTo: viewIcon.centerXAnchor).isActive = true
         
-        viewIcon.anchor(top: nil, left: viewCount.rightAnchor, bottom: nil, right: viewsView.rightAnchor, paddingTop: 0, paddingLeft: 3, paddingBottom: 0, paddingRight: 0, width: 18, height: 19)
-        viewIcon.centerYAnchor.constraint(equalTo: viewCount.centerYAnchor).isActive = true
-        
-        let savesView = UIView()
-        savesView.addSubview(viewCount1)
-        savesView.addSubview(saveIcon)
-        
-        viewCount1.anchor(top: savesView.topAnchor, left: savesView.leftAnchor, bottom: savesView.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
-        
-        saveIcon.anchor(top: nil, left: viewCount1.rightAnchor, bottom: nil, right: savesView.rightAnchor, paddingTop: 0, paddingLeft: 3, paddingBottom: 0, paddingRight: 0, width: 18, height: 19)
-        
-        addSubview(viewsView)
-//        addSubview(savesView)
+        addSubview(viewStatsView)
 
-        viewsView.anchor(top: postImage.topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 15, width: 0, height: 0)
-        viewsView.centerYAnchor.constraint(equalTo: postImage.centerYAnchor).isActive = true
-//        savesView.anchor(top: nil, left: nil, bottom: postImage.bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 5, paddingRight: 15, width: 0, height: 0)
+        viewStatsView.anchor(top: nil, left: nil, bottom: nil, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 15, width: 24, height: frame.height)
+        viewStatsView.centerYAnchor.constraint(equalTo: postImage.centerYAnchor).isActive = true
+    }
 
+    fileprivate func setupUserNameAndTimeStamp() {
+        addSubview(usernameTimeStampView)
+        usernameTimeStampView.addSubview(usernameLabel)
+        usernameTimeStampView.addSubview(timestampLabel)
+
+        usernameLabel.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 30, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        usernameLabel.centerXAnchor.constraint(equalTo: usernameTimeStampView.centerXAnchor).isActive = true
+        usernameLabel.centerYAnchor.constraint(equalTo: usernameTimeStampView.centerYAnchor).isActive = true
+
+        timestampLabel.anchor(top: usernameLabel.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        timestampLabel.centerXAnchor.constraint(equalTo: usernameLabel.centerXAnchor).isActive = true
+    
+        addSubview(usernameTimeStampView)
+
+        usernameTimeStampView.anchor(top: nil, left: postImage.rightAnchor, bottom: nil, right: viewStatsView.leftAnchor, paddingTop: 0, paddingLeft: 55, paddingBottom: 0, paddingRight: 55, width: (frame.width), height: 50)
+        usernameTimeStampView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
     }
     
     required init?(coder: NSCoder) {

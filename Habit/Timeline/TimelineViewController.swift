@@ -137,9 +137,9 @@ class TimelineViewController: UICollectionViewController, UICollectionViewDelega
 
                 // Show earliest posts first
                 self.posts.sort(by: { (p1, p2) -> Bool in
-                    return p1.creationDate.compare(p2.creationDate) == .orderedDescending
+                    return (p1.creationDate.compare(p2.creationDate) == .orderedDescending)
                 })
-
+                    
                 self.collectionView?.reloadData()
                 }, withCancel: { (err) in
                     print("Failed to fetch info for post: ", err)
@@ -161,7 +161,7 @@ class TimelineViewController: UICollectionViewController, UICollectionViewDelega
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = ((view.frame.width))
-        let height = ((view.frame.height) / 8)
+        let height = ((view.frame.height) / 6)
         
         return CGSize(width: width, height: height)
     }
