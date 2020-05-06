@@ -23,3 +23,6 @@
 [X] Remove like feature, a "view" is now what matters now as a "like".
 [X] Font changed to Avenir Next.
 [X] Set every view to Avenir Next font.
+
+[X] Make it so that if you click the PHOTO in a cell, the postViewController shows.
+[X] Make it so that if you click the USERNAME in a cell, the userProfile shows.

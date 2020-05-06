@@ -68,14 +68,27 @@ class ProfileViewPostCell: UICollectionViewCell {
         return view
     }()
     
+    let opaqueCover: UIView = {
+        let view = UIView()
+        
+        view.backgroundColor = .clear
+        view.layer.opacity = 0.7
+        view.layer.cornerRadius = 5
+        
+        return view
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         backgroundColor = .white
         
         addSubview(photoImageView)
+        addSubview(opaqueCover)
         addSubview(timestampLabel)
         addSubview(likedBar)
+        
+        opaqueCover.anchor(top: topAnchor, left: nil, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 30, paddingRight: 0, width: frame.width, height: 0)
         
         // photoImageView.layer.cornerRadius = self.frame.width / 2
         photoImageView.anchor(top: topAnchor, left: nil, bottom: bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 30, paddingRight: 0, width: frame.width, height: 0)

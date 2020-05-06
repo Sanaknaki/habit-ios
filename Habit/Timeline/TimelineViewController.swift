@@ -9,17 +9,16 @@
 import UIKit
 import Firebase
 
-class TimelineViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
-        
+class TimelineViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, TimeLinePostCellDelegate {
     let cellId = "cellId"
     
     var posts = [Post]()
-        
+    
+    weak var cell: TimelinePostCell!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(handleUpdateFeed), name: PostViewController.updateFeedNotificationName, object: nil)
-        
+                
         // Refresh
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
@@ -168,54 +167,76 @@ class TimelineViewController: UICollectionViewController, UICollectionViewDelega
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! TimelinePostCell
+        cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as? TimelinePostCell
+        cell.delegate = self
+        
+        cell.post = posts[indexPath.item]
+        
+        cell.indexPath = indexPath
         
         if(posts.count == 0) {
             return cell
         }
 
-        cell.post = posts[indexPath.item]
-
         return cell
     }
     
-    var hasLiked = false
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let id = posts[indexPath.item].id else { return }
-        let username = posts[indexPath.item].user.username
-        let timestamp = posts[indexPath.item].creationDate
-        
+    func didClickPostImage(post: Post, index: IndexPath) {
+        guard let id = post.id else { return }
+        guard var viewsInt = Int(post.views ?? "0") else { return }
+
+        let username = post.user.username
+        let timestamp = post.creationDate
         let containerView = PostViewController()
-        
-        containerView.previewImageView.loadImage(urlString: posts[indexPath.item].imageUrl)
+
+        if post.hasViewed == false {
+            viewsInt += 1
+        }
+
+        containerView.previewImageView.loadImage(urlString: post.imageUrl)
         containerView.postId = id
-        containerView.hasViewed = posts[indexPath.item].hasViewed
-        
+        containerView.hasViewed = post.hasViewed
+
         let attributedText = NSMutableAttributedString(string: username + "\n", attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-DemiBold", size: 18), NSAttributedString.Key.foregroundColor: UIColor.white])
-        
+
         attributedText.append(NSAttributedString(string: timestamp.timeAgoDisplay(userDate: false), attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-Regular", size: 14), NSAttributedString.Key.foregroundColor: UIColor.white]))
-    
+
         containerView.usernameAndTimestamp.attributedText = attributedText
-        
+
+        containerView.viewCount.text = String(viewsInt)
+
         let navController = UINavigationController(rootViewController: containerView)
         navController.modalPresentationStyle = .fullScreen
         self.present(navController, animated:true, completion: nil)
-        
+
         guard let uid = Auth.auth().currentUser?.uid else { return }
-        
-        if(hasLiked == false) {
-            let values = [uid: 1]
-            
-            Database.database().reference().child("views").child(id).updateChildValues(values) { (err, ref) in
-                if let err = err {
-                    print("Failed to like post: ", err)
-                    return
-                }
-                
-                print("Successfully liked post!")
-                
-                self.hasLiked = !self.hasLiked
+
+
+
+        let values = [uid: 1]
+
+        Database.database().reference().child("views").child(id).updateChildValues(values) { (err, ref) in
+            if let err = err {
+                print("Failed to like post: ", err)
+                return
             }
+
+            if post.hasViewed == false {
+                self.posts[index.item].views = String(viewsInt)
+                self.posts[index.item].hasViewed = true
+
+                self.collectionView.reloadItems(at: [index])
+            }
+
+            print("Successfully liked post!")
         }
+    }
+    
+    func didClickUsername(user: User) {
+        let userProfileController = ProfileViewController(collectionViewLayout: UICollectionViewFlowLayout())
+        navigationController?.pushViewController(userProfileController, animated: true)
+                
+        // Pass the clicked user's UID
+        userProfileController.userId = user.uid
     }
 }

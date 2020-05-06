@@ -239,10 +239,12 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
 //        if indexPath.item == self.posts.count - 1 && !isFinishedPaging {
 //            paginatePosts()
 //        }
-        
-        print(indexPath.item)
-        
+                
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ProfileViewPostCell
+        
+        if(indexPath.item != 0) {
+            cell.opaqueCover.backgroundColor = .mainGray()
+        }
         
         cell.post = posts[indexPath.item]
         
@@ -348,25 +350,26 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let id = posts[indexPath.item].id else { return }
-        let username = posts[indexPath.item].user.username
-        let timestamp = posts[indexPath.item].creationDate
+        if(indexPath.item == 0) {
+            guard let id = posts[indexPath.item].id else { return }
+            let username = posts[indexPath.item].user.username
+            let timestamp = posts[indexPath.item].creationDate
+            
+            let containerView = PostViewController()
+            containerView.previewImageView.loadImage(urlString: posts[indexPath.item].imageUrl)
+            containerView.postId = id
+            containerView.hasViewed = posts[indexPath.item].hasViewed
+            
+            let attributedText = NSMutableAttributedString(string: username + "\n", attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-DemiBold", size: 16), NSAttributedString.Key.foregroundColor: UIColor.white])
+            
+            attributedText.append(NSAttributedString(string: timestamp.timeAgoDisplay(userDate: false), attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-Regular", size: 14), NSAttributedString.Key.foregroundColor: UIColor.white]))
         
-        let containerView = PostViewController()
-        containerView.previewImageView.loadImage(urlString: posts[indexPath.item].imageUrl)
-        containerView.postId = id
-        containerView.hasViewed = posts[indexPath.item].hasViewed
-        
-        let attributedText = NSMutableAttributedString(string: username + "\n", attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-DemiBold", size: 16), NSAttributedString.Key.foregroundColor: UIColor.white])
-        
-        attributedText.append(NSAttributedString(string: timestamp.timeAgoDisplay(userDate: false), attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-Regular", size: 14), NSAttributedString.Key.foregroundColor: UIColor.white]))
-    
-        containerView.usernameAndTimestamp.attributedText = attributedText
-        
-        let navController = UINavigationController(rootViewController: containerView)
-        navController.modalPresentationStyle = .fullScreen
-        self.present(navController, animated:true, completion: nil)
-        
+            containerView.usernameAndTimestamp.attributedText = attributedText
+            
+            let navController = UINavigationController(rootViewController: containerView)
+            navController.modalPresentationStyle = .fullScreen
+            self.present(navController, animated:true, completion: nil)
+        }
     }
 }
 
