@@ -161,7 +161,7 @@ class TimelineViewController: UICollectionViewController, UICollectionViewDelega
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = ((view.frame.width))
-        let height = ((view.frame.height) / 6)
+        let height = ((view.frame.height) / 3)
         
         return CGSize(width: width, height: height)
     }
