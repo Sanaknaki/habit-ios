@@ -32,9 +32,9 @@ class TimelinePostCell: UICollectionViewCell {
                         
             postImage.layer.cornerRadius = 120 / 2
             
-            viewIcon.image = (post.hasViewed == true) ? #imageLiteral(resourceName: "viewed") : #imageLiteral(resourceName: "view")
+            viewIcon.image = (post.hasViewed == true) ? #imageLiteral(resourceName: "viewed") : #imageLiteral(resourceName: "view-post")
             viewCount.text = post.views
-            viewCount.textColor = (post.hasViewed == true) ? .mainBlue() : .mainGray()
+            viewCount.textColor = (post.hasViewed == true) ? .darkMainBlue() : .white
             
             let postImageGesture = UITapGestureRecognizer(target: self, action: #selector(handleImageClick))
             let usernameGesture = UITapGestureRecognizer(target: self, action: #selector(handleUsernameClick))
@@ -57,7 +57,7 @@ class TimelinePostCell: UICollectionViewCell {
         let label = UILabel()
                 
         label.numberOfLines = 0
-        label.textColor = .mainGray()
+        label.textColor = .white
         label.font = UIFont(name: "AvenirNext-Regular", size: 12)
         
         return label
@@ -67,7 +67,7 @@ class TimelinePostCell: UICollectionViewCell {
         let label = UILabel()
                 
         label.numberOfLines = 0
-        label.textColor = .black
+        label.textColor = .white
         
         label.font = UIFont(name: "AvenirNext-DemiBold", size: 14)
         
@@ -88,7 +88,7 @@ class TimelinePostCell: UICollectionViewCell {
     let postImage: CustomImageView = {
         let postImage = CustomImageView()
         
-        postImage.backgroundColor = .lightGray
+        postImage.backgroundColor = .lightMainBlue()
         postImage.contentMode = .scaleAspectFill
         postImage.clipsToBounds = true
     
@@ -138,7 +138,7 @@ class TimelinePostCell: UICollectionViewCell {
     let bottomSeperator: UIView = {
         let view = UIView()
         
-        view.backgroundColor = .mainGray()
+        view.backgroundColor = .white
         
         return view
     }()

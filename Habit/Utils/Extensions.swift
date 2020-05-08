@@ -19,6 +19,10 @@ extension UIColor {
         return UIColor.rgb(red: 242, green: 89, blue: 89)
     }
     
+    static func darkMainBlue() -> UIColor {
+        return UIColor.rgb(red: 57, green: 153, blue: 184)
+    }
+    
     static func mainBlue() -> UIColor {
         return UIColor.rgb(red: 89, green: 204, blue: 242)
     }
@@ -97,12 +101,5 @@ extension Date {
         }
         
         return "\(quotient)\(unit)"
-        
-//        if(userDate) {
-//            return "\(quotient)\(unit)"
-//        } else {
-//            return "\(quotient)\(unit) ago"
-//        }
-        
     }
 }

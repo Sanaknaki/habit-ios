@@ -25,7 +25,7 @@ class SearchResultCell: UICollectionViewCell {
                 followers = String(snapshot.childrenCount)
                 let grammarFollower = (Int(followers) ?? 0 < 1 || Int(followers) ?? 0 > 1) ? " followers" : " follower"
                     
-                let attributedText = NSAttributedString(string: followers + " " + grammarFollower, attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-Regular", size: 14), NSAttributedString.Key.foregroundColor: UIColor.black])
+                let attributedText = NSAttributedString(string: followers + " " + grammarFollower, attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-Regular", size: 14), NSAttributedString.Key.foregroundColor: UIColor.white])
                 
                 self.userStatsLabel.attributedText = attributedText
             })
@@ -36,7 +36,7 @@ class SearchResultCell: UICollectionViewCell {
         let label = UILabel()
         
         label.text = "Username"
-
+        label.textColor = .white
         label.font = UIFont(name: "AvenirNext-DemiBold", size: 14)
         
         return label
@@ -64,9 +64,9 @@ class SearchResultCell: UICollectionViewCell {
         userStatsLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         
         let seperatorView = UIView()
-        seperatorView.backgroundColor = UIColor(white: 0, alpha: 0.5)
+        seperatorView.backgroundColor = .white
         addSubview(seperatorView)
-        seperatorView.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
+        seperatorView.anchor(top: nil, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 20, paddingBottom: 0, paddingRight: 0, width: 0, height: 0.5)
     }
     
     required init?(coder aDecoder: NSCoder) {

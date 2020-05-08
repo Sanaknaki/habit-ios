@@ -22,6 +22,8 @@ class ProfileViewHeader: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        backgroundColor = .mainBlue()
+        
         addSubview(userStatsLabel)
     
         userStatsLabel.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)

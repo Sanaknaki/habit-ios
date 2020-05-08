@@ -120,7 +120,8 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
             
         NotificationCenter.default.addObserver(self, selector: #selector(handleUpdateFeed), name: PreviewPhotoContainer.updateFeedNotificationName, object: nil)
         
-        collectionView.backgroundColor = .white
+        collectionView.backgroundColor = .mainBlue()
+
         collectionView.register(ProfileViewHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
         collectionView.register(ProfileViewPostCell.self, forCellWithReuseIdentifier: cellId)
        
@@ -207,8 +208,8 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
             let username = user?.username ?? ""
             let joinedDate = user?.joinedDate.timeAgoDisplay(userDate: true) ?? ""
             
-            let attributedText = NSMutableAttributedString(string: username + "\n", attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-DemiBold", size: 15), NSAttributedString.Key.foregroundColor: UIColor.black])
-            attributedText.append(NSAttributedString(string: followers + " followers", attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-Regular", size: 14), NSAttributedString.Key.foregroundColor: UIColor.mainGray()]))
+            let attributedText = NSMutableAttributedString(string: username + "\n", attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-DemiBold", size: 15), NSAttributedString.Key.foregroundColor: UIColor.white])
+            attributedText.append(NSAttributedString(string: followers + " followers", attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-Regular", size: 14), NSAttributedString.Key.foregroundColor: UIColor.white]))
             
             header.userStatsLabel.attributedText = attributedText
         })
@@ -245,6 +246,8 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
         }
         
         cell.post = posts[indexPath.item]
+        
+        cell.backgroundColor = .mainBlue()
         
         return cell
     }

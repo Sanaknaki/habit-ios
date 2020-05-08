@@ -45,14 +45,9 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
             guard var dicts = snapshot.value as? [String: Any] else { return }
             guard let dictValues = dicts.first?.value as? [String : Any] else { return }
             
-            print("####")
-            print(snapshot.childrenCount)
-            print("####")
-            
             let dateFormatted = Date(timeIntervalSince1970: dictValues["creationDate"] as? Double ?? 0)
             
             if((!calendar.isDateInYesterday(dateFormatted) && !calendar.isDateInToday(dateFormatted)) && snapshot.childrenCount > 0) {
-                print("GAME OVER!")
                 DispatchQueue.main.async {
                     let gameOverViewController = GameOverViewController()
                     let navController = UINavigationController(rootViewController: gameOverViewController)
@@ -61,8 +56,6 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
                 }
             }
         }
-        
-        print("NOT GAME OVER!")
     }
 
     @objc func handleCamera() {
@@ -95,20 +88,19 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
         // Add
         let captureNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "capture").withRenderingMode(.alwaysOriginal), selectedImage: #imageLiteral(resourceName: "capture").withRenderingMode(.alwaysOriginal), rootViewController: UICollectionViewController(collectionViewLayout: UICollectionViewFlowLayout()))
         
-        // Profile
-        let exploreNavController = templateNavController(unselectedImage: #imageLiteral(resourceName: "explore").withRenderingMode(.alwaysOriginal), selectedImage: #imageLiteral(resourceName: "explore-clicked").withRenderingMode(.alwaysOriginal), rootViewController: UICollectionViewController(collectionViewLayout: UICollectionViewFlowLayout()))
-        
         tabBar.isTranslucent = false
-        tabBar.backgroundColor = .white
+        tabBar.barTintColor = .mainBlue()
+        tabBar.tintColor = .mainBlue()
         tabBar.clipsToBounds = true
         
         // Takes in an array of Nav Controllers, that show their respective ViewController
-        viewControllers = [timelineNavController,
-                           captureNavController
-                           /*exploreNavController*/]
+        viewControllers = [timelineNavController, captureNavController]
         
         // Modify tab bar insets
         guard let items = tabBar.items else { return }
+            
+        items[1].badgeColor = .clear
+        items[1].badgeValue = "⏰"
         
         for item in items {
             item.imageInsets = UIEdgeInsets(top: 20, left: 0, bottom: -20, right: 0)

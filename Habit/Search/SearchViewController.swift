@@ -16,12 +16,8 @@ class SearchViewController: UICollectionViewController, UICollectionViewDelegate
     
     lazy var searchBar: UISearchBar = {
         let sb = UISearchBar()
-        sb.placeholder = "Search"
-        
-        sb.barTintColor = .mainGray()
-        
         // Search bar has a textfield in it, and to edit it, must call it through this call.
-        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).backgroundColor = UIColor.rgb(red: 240, green: 240, blue: 240)
+        UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).backgroundColor = .darkMainBlue()
         
         sb.delegate = self
         
@@ -45,7 +41,7 @@ class SearchViewController: UICollectionViewController, UICollectionViewDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        collectionView.backgroundColor = .white
+        collectionView.backgroundColor = .mainBlue()
         
         self.navigationController?.navigationBar.shadowImage = UIImage()
         
@@ -76,6 +72,8 @@ class SearchViewController: UICollectionViewController, UICollectionViewDelegate
     // When moving back to search view, bring back search bar
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        searchBar.searchTextField.attributedPlaceholder = NSAttributedString(string: "Search", attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
         
         searchBar.isHidden = false
     }
@@ -142,6 +140,11 @@ class SearchViewController: UICollectionViewController, UICollectionViewDelegate
         userProfileController.userId = user.uid
     }
     
+    // Up/Down spacing
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return filteredUsers.count
     }
@@ -150,6 +153,8 @@ class SearchViewController: UICollectionViewController, UICollectionViewDelegate
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! SearchResultCell
         
         cell.user = filteredUsers[indexPath.item]
+        
+        cell.backgroundColor = .lightMainBlue()
         
         return cell
     }

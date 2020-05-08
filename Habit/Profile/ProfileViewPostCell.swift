@@ -21,10 +21,8 @@ class ProfileViewPostCell: UICollectionViewCell {
 
             timestampLabel.text = createdDate.timeAgoDisplay(userDate: false)
             
-            likedBar.layer.backgroundColor = (isViewed == true) ? UIColor.mainBlue().cgColor : UIColor.mainGray().cgColor
-            
-            viewIcon.image = (isViewed == true) ? #imageLiteral(resourceName: "viewed") : #imageLiteral(resourceName: "view")
-            viewCount.textColor = (isViewed == true) ? .mainBlue() : .mainGray()
+            viewIcon.image = (isViewed == true) ? #imageLiteral(resourceName: "viewed") : #imageLiteral(resourceName: "view-post")
+            viewCount.textColor = (isViewed == true) ? .darkMainBlue() : .white
             viewCount.text = post?.views
         }
     }
@@ -33,7 +31,7 @@ class ProfileViewPostCell: UICollectionViewCell {
         let label = UILabel()
                 
         label.numberOfLines = 0
-        label.textColor = .mainGray()
+        label.textColor = .white
         label.font = UIFont(name: "AvenirNext-Regular", size: 12)
         
         return label
@@ -42,30 +40,13 @@ class ProfileViewPostCell: UICollectionViewCell {
     let photoImageView: CustomImageView = {
         let iv = CustomImageView()
         
-        iv.backgroundColor = UIColor.mainGray()
+        iv.backgroundColor = .lightMainBlue()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         
         iv.layer.cornerRadius = 5
         
         return iv
-    }()
-    
-    let likedButton: UIButton = {
-        let btn = UIButton()
-        
-        btn.setImage(#imageLiteral(resourceName: "star").withRenderingMode(.alwaysOriginal), for: .normal)
-        
-        return btn
-    }()
-    
-    let likedBar: UIView = {
-        let view = UIView()
-        
-        view.backgroundColor = UIColor.mainGray()
-        view.layer.cornerRadius = 2
-        
-        return view
     }()
     
     let viewStatsView: UIView = {
@@ -93,7 +74,7 @@ class ProfileViewPostCell: UICollectionViewCell {
         let view = UIView()
         
         view.backgroundColor = .mainGray()
-        view.layer.opacity = 0.7
+        view.layer.opacity = 0.4
         view.layer.cornerRadius = 5
         
         return view

@@ -19,7 +19,7 @@ class TimelineViewController: UICollectionViewController, UICollectionViewDelega
     let noPostsIcon: CustomImageView = {
         let image = CustomImageView()
         
-        image.image = #imageLiteral(resourceName: "icon-grey").withRenderingMode(.alwaysOriginal)
+        image.image = #imageLiteral(resourceName: "icon-white").withRenderingMode(.alwaysOriginal)
         
         return image
     }()
@@ -29,13 +29,13 @@ class TimelineViewController: UICollectionViewController, UICollectionViewDelega
         
         label.text = "Start your Habit by making a post."
         label.font = UIFont(name: "AvenirNext-Regular", size: 14)
-        label.textColor = .mainGray()
+        label.textColor = .white
         return label
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-                
+        
         NotificationCenter.default.addObserver(self, selector: #selector(handleRefresh), name: PreviewPhotoContainer.updateFeedNotificationName, object: nil)
         
         // Refresh
@@ -43,7 +43,7 @@ class TimelineViewController: UICollectionViewController, UICollectionViewDelega
         refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
         collectionView.refreshControl = refreshControl
         
-        collectionView.backgroundColor = .white
+        collectionView.backgroundColor = .mainBlue()
         collectionView.register(TimelinePostCell.self, forCellWithReuseIdentifier: cellId)
         
         setupNavigationBar()
@@ -98,8 +98,12 @@ class TimelineViewController: UICollectionViewController, UICollectionViewDelega
     }
     
     fileprivate func setupNavigationBar() {
+        self.navigationController?.navigationBar.barStyle = .black
         self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.barTintColor = .white
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.navigationBar.tintColor = .mainBlue()
+        self.navigationController?.navigationBar.barTintColor = .mainBlue()
+        
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "search").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleSearchClick))
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "profile").withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleProfileClick))
     }
@@ -223,6 +227,8 @@ class TimelineViewController: UICollectionViewController, UICollectionViewDelega
         cell.delegate = self
         
         cell.post = posts[indexPath.item]
+        
+        // cell.backgroundColor = .clear
         
         cell.indexPath = indexPath
 
