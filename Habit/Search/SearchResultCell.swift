@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class SearchResultCell: UICollectionViewCell {
     
@@ -15,12 +16,19 @@ class SearchResultCell: UICollectionViewCell {
             usernameLabel.text = user?.username
             
             guard let joinedDate = user?.joinedDate.timeAgoDisplay(userDate: true) else { return }
+            guard let uid = user?.uid else { return }
             
-            let attributedText = NSMutableAttributedString(string: joinedDate + "\n", attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-Regular", size: 14), NSAttributedString.Key.foregroundColor: UIColor.black])
+            let ref = Database.database().reference().child("followers").child(uid)
+            var followers = "0"
             
-            attributedText.append(NSAttributedString(string: "0 followers", attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-Regular", size: 14), NSAttributedString.Key.foregroundColor: UIColor.black]))
-        
-            userStatsLabel.attributedText = attributedText
+            ref.observeSingleEvent(of: .value, with: { (snapshot) in
+                followers = String(snapshot.childrenCount)
+                let grammarFollower = (Int(followers) ?? 0 < 1 || Int(followers) ?? 0 > 1) ? " followers" : " follower"
+                    
+                let attributedText = NSAttributedString(string: followers + " " + grammarFollower, attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-Regular", size: 14), NSAttributedString.Key.foregroundColor: UIColor.black])
+                
+                self.userStatsLabel.attributedText = attributedText
+            })
         }
     }
     

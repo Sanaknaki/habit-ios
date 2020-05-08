@@ -28,3 +28,8 @@
 [X] Make it so that if you click the USERNAME in a cell, the userProfile shows.
 
 [X] If you're on your own page, you can view all your posts & if on someone else's account, you only see their latest post.
+
+[X] Finish logic to show 'game over' screen.
+[X] Show a new user message to get them posting their first photo.
+[] Work on making the app less 'whitespace'-y when a new user joins.
+[] Make it so you can only post once a day

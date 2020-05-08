@@ -16,9 +16,28 @@ class TimelineViewController: UICollectionViewController, UICollectionViewDelega
     
     weak var cell: TimelinePostCell!
     
+    let noPostsIcon: CustomImageView = {
+        let image = CustomImageView()
+        
+        image.image = #imageLiteral(resourceName: "icon-grey").withRenderingMode(.alwaysOriginal)
+        
+        return image
+    }()
+    
+    let noPostsMessage: UILabel = {
+        let label = UILabel()
+        
+        label.text = "Start your Habit by making a post."
+        label.font = UIFont(name: "AvenirNext-Regular", size: 14)
+        label.textColor = .mainGray()
+        return label
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
                 
+        NotificationCenter.default.addObserver(self, selector: #selector(handleRefresh), name: PreviewPhotoContainer.updateFeedNotificationName, object: nil)
+        
         // Refresh
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
@@ -31,7 +50,13 @@ class TimelineViewController: UICollectionViewController, UICollectionViewDelega
         
         fetchAllPosts()
         
-        collectionView.alwaysBounceVertical = true
+        showNoPosts()
+        
+//        if(posts.count == 0) {
+//            collectionView.alwaysBounceVertical = false
+//        } else {
+//            collectionView.alwaysBounceVertical = true
+//        }
     }
     
     // Auto update when we upload a new post
@@ -43,7 +68,33 @@ class TimelineViewController: UICollectionViewController, UICollectionViewDelega
         // Reset the posts and then you will refetch with new following info and such
         posts.removeAll()
         
+        noPostsIcon.isHidden = true
+        noPostsMessage.isHidden = true
+        
         fetchAllPosts()
+    }
+    
+    fileprivate func showNoPosts() {
+        if(posts.count == 0) {
+            view.addSubview(noPostsIcon)
+            view.addSubview(noPostsMessage)
+            
+            noPostsIcon.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 70, height: 70)
+            noPostsIcon.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+            noPostsIcon.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+            noPostsIcon.isHidden = false
+            
+            noPostsMessage.anchor(top: noPostsIcon.bottomAnchor, left: nil, bottom: nil, right: nil, paddingTop: 10, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+            noPostsMessage.centerXAnchor.constraint(equalTo: noPostsIcon.centerXAnchor).isActive = true
+            noPostsMessage.isHidden = false
+            
+            collectionView.alwaysBounceVertical = false
+        } else {
+            noPostsIcon.isHidden = true
+            noPostsMessage.isHidden = true
+            
+            collectionView.alwaysBounceVertical = true
+        }
     }
     
     fileprivate func setupNavigationBar() {
@@ -124,7 +175,7 @@ class TimelineViewController: UICollectionViewController, UICollectionViewDelega
                 Database.database().reference().child("views").child(key).observeSingleEvent(of: .value, with: { (snapshot) in
                     let hasViewed = snapshot.childSnapshot(forPath: uid).value
                     let views =  snapshot.childrenCount
-                    
+                                        
                     post.views = String(views)
                     
                     if let value = hasViewed as? Int, value == 1 {
@@ -133,14 +184,15 @@ class TimelineViewController: UICollectionViewController, UICollectionViewDelega
                         post.hasViewed = false
                     }
                     
-                self.posts.append(post)
-
-                // Show earliest posts first
-                self.posts.sort(by: { (p1, p2) -> Bool in
-                    return (p1.creationDate.compare(p2.creationDate) == .orderedDescending)
-                })
+                    self.posts.append(post)
                     
-                self.collectionView?.reloadData()
+                    // Show earliest posts first
+                    self.posts.sort(by: { (p1, p2) -> Bool in
+                        return (p1.creationDate.compare(p2.creationDate) == .orderedDescending)
+                    })
+                    
+                    self.collectionView?.reloadData()
+                    self.showNoPosts()
                 }, withCancel: { (err) in
                     print("Failed to fetch info for post: ", err)
                 })
@@ -173,10 +225,6 @@ class TimelineViewController: UICollectionViewController, UICollectionViewDelega
         cell.post = posts[indexPath.item]
         
         cell.indexPath = indexPath
-        
-        if(posts.count == 0) {
-            return cell
-        }
 
         return cell
     }
@@ -211,8 +259,6 @@ class TimelineViewController: UICollectionViewController, UICollectionViewDelega
 
         guard let uid = Auth.auth().currentUser?.uid else { return }
 
-
-
         let values = [uid: 1]
 
         Database.database().reference().child("views").child(id).updateChildValues(values) { (err, ref) in
@@ -227,7 +273,6 @@ class TimelineViewController: UICollectionViewController, UICollectionViewDelega
 
                 self.collectionView.reloadItems(at: [index])
             }
-
             print("Successfully liked post!")
         }
     }

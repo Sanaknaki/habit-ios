@@ -16,16 +16,16 @@ class ProfileViewPostCell: UICollectionViewCell {
             guard let imageUrl = post?.imageUrl else { return }
             guard let createdDate = post?.creationDate else { return }
             guard let isViewed = post?.hasViewed else { return }
-            
             // Load the image for the post
             photoImageView.loadImage(urlString: imageUrl)
-            
-//            photoImageView.layer.borderColor = (isLiked == true) ? UIColor.mainBlue().cgColor : UIColor.mainGray().cgColor
-//            photoImageView.layer.borderWidth = 3
 
             timestampLabel.text = createdDate.timeAgoDisplay(userDate: false)
             
             likedBar.layer.backgroundColor = (isViewed == true) ? UIColor.mainBlue().cgColor : UIColor.mainGray().cgColor
+            
+            viewIcon.image = (isViewed == true) ? #imageLiteral(resourceName: "viewed") : #imageLiteral(resourceName: "view")
+            viewCount.textColor = (isViewed == true) ? .mainBlue() : .mainGray()
+            viewCount.text = post?.views
         }
     }
     
@@ -33,8 +33,8 @@ class ProfileViewPostCell: UICollectionViewCell {
         let label = UILabel()
                 
         label.numberOfLines = 0
-        label.textColor = .black
-        label.font = UIFont(name: "AvenirNext-DemiBold", size: 10)
+        label.textColor = .mainGray()
+        label.font = UIFont(name: "AvenirNext-Regular", size: 12)
         
         return label
     }()
@@ -68,10 +68,31 @@ class ProfileViewPostCell: UICollectionViewCell {
         return view
     }()
     
+    let viewStatsView: UIView = {
+       let view = UIView()
+    
+        return view
+    }()
+    
+    let viewCount: UILabel = {
+        let label = UILabel()
+        
+        label.textAlignment = .right
+        label.font = UIFont(name: "AvenirNext-DemiBold", size: 12)
+        
+        return label
+    }()
+    
+    let viewIcon: CustomImageView = {
+        let image = CustomImageView()
+                
+        return image
+    }()
+    
     let opaqueCover: UIView = {
         let view = UIView()
         
-        view.backgroundColor = .clear
+        view.backgroundColor = .mainGray()
         view.layer.opacity = 0.7
         view.layer.cornerRadius = 5
         
@@ -81,26 +102,34 @@ class ProfileViewPostCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = .white
-        
         addSubview(photoImageView)
         addSubview(opaqueCover)
         addSubview(timestampLabel)
-        addSubview(likedBar)
-        
+                
         opaqueCover.anchor(top: topAnchor, left: nil, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 30, paddingRight: 0, width: frame.width, height: 0)
         
-        // photoImageView.layer.cornerRadius = self.frame.width / 2
         photoImageView.anchor(top: topAnchor, left: nil, bottom: bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 30, paddingRight: 0, width: frame.width, height: 0)
         
-        likedBar.anchor(top: photoImageView.bottomAnchor, left: photoImageView.leftAnchor, bottom: nil, right: photoImageView.rightAnchor, paddingTop: 5, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 5)
-//        photoImageView.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        // photoImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        setupPostStats()
             
-        timestampLabel.anchor(top: nil, left: nil, bottom: bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 5, paddingRight: 0, width: 0, height: 0)
-        timestampLabel.centerXAnchor.constraint(equalTo: photoImageView.centerXAnchor).isActive = true
-//
-//        likedButton.anchor(top: nil, left: nil, bottom: photoImageView.bottomAnchor, right: photoImageView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 8, paddingRight: 8, width: 20, height: 20)
+        timestampLabel.anchor(top: photoImageView.bottomAnchor, left: nil, bottom: nil, right: photoImageView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 5, width: 0, height: 0)
+         timestampLabel.centerYAnchor.constraint(equalTo: viewStatsView.centerYAnchor).isActive = true
+
+    }
+    
+    fileprivate func setupPostStats() {
+        viewStatsView.addSubview(viewIcon)
+        viewStatsView.addSubview(viewCount)
+
+        viewIcon.anchor(top: viewStatsView.topAnchor, left: viewStatsView.leftAnchor, bottom: nil, right: viewStatsView.rightAnchor, paddingTop: 5, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 17, height: 18)
+        viewCount.centerYAnchor.constraint(equalTo: viewStatsView.centerYAnchor).isActive = true
+
+        viewCount.anchor(top: viewStatsView.topAnchor, left: viewIcon.rightAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+        viewCount.centerYAnchor.constraint(equalTo: viewIcon.centerYAnchor).isActive = true
+
+        addSubview(viewStatsView)
+
+        viewStatsView.anchor(top: photoImageView.bottomAnchor, left: photoImageView.leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 5, paddingBottom: 0, paddingRight: 0, width: 17, height: 0)
     }
     
     required init?(coder: NSCoder) {

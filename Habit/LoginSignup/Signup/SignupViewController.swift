@@ -9,8 +9,7 @@
 import UIKit
 import Firebase
 
-class SignupViewController: UIViewController {
-    
+class SignupViewController: UIViewController, UITextFieldDelegate {
     let signupLabel: UILabel = {
         let label = UILabel()
         
@@ -31,7 +30,6 @@ class SignupViewController: UIViewController {
         let label = UILabel()
         
         label.text = "Username"
-        
         label.textColor = .mainGray()
         label.font = UIFont(name: "AvenirNext-Regular", size: 14)
         
@@ -42,6 +40,8 @@ class SignupViewController: UIViewController {
         let textfield = LoginSignUpInputTextField()
         
         textfield.attributedPlaceholder = NSMutableAttributedString(string: "Username", attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-Regular", size: 14), NSAttributedString.Key.foregroundColor: UIColor.white])
+        
+        textfield.addTarget(self, action: #selector(handleTextInputChange), for: .editingChanged)
         
         return textfield
     }()
@@ -130,7 +130,6 @@ class SignupViewController: UIViewController {
     // Handle disabling/enabling of login button
     @objc func handleTextInputChange() {
         let isSignUpFormValid = usernameTextField.text?.count ?? 0 > 0 && emailTextField.text?.count ?? 0 > 0 && passwordTextField.text?.count ?? 0 > 0 && retypePasswordTextField.text?.count ?? 0 > 0
-        
         if isSignUpFormValid {
             signupButton.setTitleColor(.black, for: .normal)
             signupButton.isEnabled = true
@@ -167,13 +166,23 @@ class SignupViewController: UIViewController {
         guard let passwordText = passwordTextField.text else { return }
         guard let retypePasswordText = retypePasswordTextField.text else { return }
         
-        if(passwordText != retypePasswordText) {
+        self.errorMessageLabel.isHidden = true
+        
+        if(usernameText.contains(" ")) {
+            self.errorMessageLabel.attributedText = NSMutableAttributedString(string: "No spaces in username!", attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-Regular", size: 14), NSAttributedString.Key.foregroundColor: UIColor.mainRed()])
+            self.errorMessageLabel.isHidden = false
+        } else if (usernameText.count > 24) {
+            self.errorMessageLabel.attributedText = NSMutableAttributedString(string: "Username must be less than 24 characters!", attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-Regular", size: 14), NSAttributedString.Key.foregroundColor: UIColor.mainRed()])
+            self.errorMessageLabel.isHidden = false
+        } else if(passwordText != retypePasswordText) {
             self.errorMessageLabel.attributedText = NSMutableAttributedString(string: "Passwords do not match!", attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-Regular", size: 14), NSAttributedString.Key.foregroundColor: UIColor.mainRed()])
             self.errorMessageLabel.isHidden = false
         } else {
-            Auth.auth().createUser(withEmail: emailText, password: passwordText, completion: { (user: AuthDataResult?, error: Error?) in
+            Auth.auth().createUser(withEmail: emailText.lowercased(), password: passwordText, completion: { (user: AuthDataResult?, error: Error?) in
                 if let err = error {
                     print("Failed to create user: ", err)
+                    self.errorMessageLabel.attributedText = NSMutableAttributedString(string: err.localizedDescription, attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-Regular", size: 14), NSAttributedString.Key.foregroundColor: UIColor.mainRed()])
+                    self.errorMessageLabel.isHidden = false
                     return
                 }
                 
@@ -181,7 +190,7 @@ class SignupViewController: UIViewController {
                 
                 guard let uid = user?.user.uid else { return }
                 
-                let dictValues = ["username": usernameText, "joined_date": Date().timeIntervalSince1970] as [String: Any]
+                let dictValues = ["username": usernameText.lowercased(), "joined_date": Date().timeIntervalSince1970] as [String: Any]
                 
                 // Tree is {users: {uid: {username : username, profileImageUrl: url}}}
                 let values = [uid: dictValues]
@@ -228,7 +237,7 @@ class SignupViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+            
         view.backgroundColor = .white
         
         setupNavigationItems()

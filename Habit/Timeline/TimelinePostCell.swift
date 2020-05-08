@@ -99,7 +99,25 @@ class TimelinePostCell: UICollectionViewCell {
         guard let post = post else { return }
         guard let indexPath = indexPath else { return }
         
-        delegate?.didClickPostImage(post: post, index: indexPath)
+        let expandTransform:CGAffineTransform = CGAffineTransform(scaleX: 1.15, y: 1.15);
+        UIView.transition(with: self.postImage,
+            duration:0.3,
+            options: UIView.AnimationOptions.transitionCrossDissolve,
+            animations: {
+              self.postImage.transform = expandTransform
+            },
+            completion: {(finished: Bool) in
+                UIView.animate(withDuration: 0.5,
+                delay:0.0,
+                usingSpringWithDamping:0.50,
+                initialSpringVelocity:0.2,
+                options:UIView.AnimationOptions.curveEaseOut,
+                animations: {
+                    self.postImage.transform = expandTransform.inverted()
+                }, completion:nil)
+          })
+        
+         delegate?.didClickPostImage(post: post, index: indexPath)
     }
     
     let viewCount: UILabel = {

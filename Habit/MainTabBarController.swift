@@ -20,12 +20,22 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
         self.delegate = self
         
         // Check if there's a user logged in, show login view
-        test()
+        if(Auth.auth().currentUser == nil) {
+            DispatchQueue.main.async {
+                let loginViewController = LoginOrSignUpScreen()
+                let navController = UINavigationController(rootViewController: loginViewController)
+                navController.modalPresentationStyle = .fullScreen
+                self.present(navController, animated:true, completion: nil)
+            }
+        }
+        
+        // Check if there's a user logged in, show login view
+        checkIfYouBrokeHabit()
         
         setupViewControllers()
     }
     
-    fileprivate func test() {
+    fileprivate func checkIfYouBrokeHabit() {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         let ref = Database.database().reference().child("posts").child(uid)
         let query = ref.queryLimited(toLast: 1)
@@ -35,18 +45,14 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
             guard var dicts = snapshot.value as? [String: Any] else { return }
             guard let dictValues = dicts.first?.value as? [String : Any] else { return }
             
+            print("####")
+            print(snapshot.childrenCount)
+            print("####")
+            
             let dateFormatted = Date(timeIntervalSince1970: dictValues["creationDate"] as? Double ?? 0)
             
-            if(!calendar.isDateInYesterday(dateFormatted) || !calendar.isDateInToday(dateFormatted)) {
-                if(Auth.auth().currentUser == nil) {
-                    DispatchQueue.main.async {
-                        let loginViewController = LoginOrSignUpScreen()
-                        let navController = UINavigationController(rootViewController: loginViewController)
-                        navController.modalPresentationStyle = .fullScreen
-                        self.present(navController, animated:true, completion: nil)
-                    }
-                }
-            } else {
+            if((!calendar.isDateInYesterday(dateFormatted) && !calendar.isDateInToday(dateFormatted)) && snapshot.childrenCount > 0) {
+                print("GAME OVER!")
                 DispatchQueue.main.async {
                     let gameOverViewController = GameOverViewController()
                     let navController = UINavigationController(rootViewController: gameOverViewController)
@@ -55,6 +61,8 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
                 }
             }
         }
+        
+        print("NOT GAME OVER!")
     }
 
     @objc func handleCamera() {

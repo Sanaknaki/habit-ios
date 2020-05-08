@@ -5,7 +5,6 @@
 //  Created by Ali Sanaknaki on 2020-04-12.
 //  Copyright © 2020 Ali Sanaknaki. All rights reserved.
 //
-
 import UIKit
 import Firebase
 
@@ -119,6 +118,8 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
     override func viewDidLoad() {
         super.viewDidLoad()
             
+        NotificationCenter.default.addObserver(self, selector: #selector(handleUpdateFeed), name: PreviewPhotoContainer.updateFeedNotificationName, object: nil)
+        
         collectionView.backgroundColor = .white
         collectionView.register(ProfileViewHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
         collectionView.register(ProfileViewPostCell.self, forCellWithReuseIdentifier: cellId)
@@ -193,18 +194,24 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
     
     // Build the header, give it an Id to be altered
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        
         // Downcast to be the UserProfileHeader
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerId, for: indexPath) as! ProfileViewHeader
-                
-        let username = user?.username ?? ""
-        let joinedDate = user?.joinedDate.timeAgoDisplay(userDate: true) ?? ""
+        let user = self.user
+        let uid = userId ?? Auth.auth().currentUser?.uid ?? ""
+        let ref = Database.database().reference().child("followers").child(uid)
+        var followers = "0"
         
-        let attributedText = NSMutableAttributedString(string: username + "\n", attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-DemiBold", size: 15), NSAttributedString.Key.foregroundColor: UIColor.black])
-        attributedText.append(NSMutableAttributedString(string: joinedDate + "\n", attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-Regular", size: 14), NSAttributedString.Key.foregroundColor: UIColor.mainGray()]))
-        attributedText.append(NSAttributedString(string: "0 followers", attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-Regular", size: 14), NSAttributedString.Key.foregroundColor: UIColor.mainGray()]))
-        
-        header.userStatsLabel.attributedText = attributedText
+        ref.observeSingleEvent(of: .value, with: { (snapshot) in
+            followers = String(snapshot.childrenCount)
+            
+            let username = user?.username ?? ""
+            let joinedDate = user?.joinedDate.timeAgoDisplay(userDate: true) ?? ""
+            
+            let attributedText = NSMutableAttributedString(string: username + "\n", attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-DemiBold", size: 15), NSAttributedString.Key.foregroundColor: UIColor.black])
+            attributedText.append(NSAttributedString(string: followers + " followers", attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-Regular", size: 14), NSAttributedString.Key.foregroundColor: UIColor.mainGray()]))
+            
+            header.userStatsLabel.attributedText = attributedText
+        })
         
         return header
     }
@@ -213,7 +220,6 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
 //    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
 //        return 10
 //    }
-
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         UIEdgeInsets(top: 0.0, left: 5.0, bottom: 10.0, right: 5.0)
     }
@@ -232,7 +238,9 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ProfileViewPostCell
         
-        if(indexPath.item != 0 && ((Auth.auth().currentUser?.uid) != userId)) {
+        if(indexPath.item == 0 || ((Auth.auth().currentUser?.uid) == userId)) {
+            cell.opaqueCover.backgroundColor = .clear
+        } else {
             cell.opaqueCover.backgroundColor = .mainGray()
         }
         
@@ -242,11 +250,7 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
     }
     
     var posts = [Post]()
-    var isFinishedPaging = false
-    
     fileprivate func paginatePosts() {
-        print("Start paging for more posts.")
-        
         // Get user of profile, could be you, could be someone you searching
         guard let user = self.user else { return }
         guard let uid = self.user?.uid else { return }
@@ -268,14 +272,17 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
                 
                 guard let uid = Auth.auth().currentUser?.uid else { return }
                 
-                Database.database().reference().child("views").child(key).child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
+                Database.database().reference().child("views").child(key).observeSingleEvent(of: .value, with: { (snapshot) in
+                    let hasViewed = snapshot.childSnapshot(forPath: uid).value
+                    let views =  snapshot.childrenCount
                     
-                    if let value = snapshot.value as? Int, value == 1 {
+                    post.views = String(views)
+                    
+                    if let value = hasViewed as? Int, value == 1 {
                         post.hasViewed = true
                     } else {
                         post.hasViewed = false
                     }
-                    
                     
                     self.posts.append(post)
                     
@@ -293,46 +300,6 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
         }) { (err) in
             print("Failed to fetch posts: ", err)
         }
-//        // Order by creation date
-//        var query = ref.queryOrdered(byChild: "creationDate")
-//
-//        // Grab last cell posted
-//        if posts.count > 0 {
-//            let value = posts.last?.creationDate.timeIntervalSince1970
-//            query = query.queryEnding(atValue: value)
-//        }
-//
-//        query.queryLimited(toLast: 4).observeSingleEvent(of: .value, with: { (snapshot) in
-//
-//            // All of the remaining objects in snapshot
-//            guard var allObjects = snapshot.children.allObjects as? [DataSnapshot] else { return }
-//
-//            allObjects.reverse()
-//
-//            if allObjects.count < 4 {
-//                self.isFinishedPaging = true
-//            }
-//
-//            if self.posts.count > 0 && allObjects.count > 0 {
-//                allObjects.removeFirst()
-//            }
-//
-//            guard let user = self.user else { return }
-//
-//            allObjects.forEach ({ (snapshot) in
-//                // print(snapshot.key)
-//
-//                guard let dict = snapshot.value as? [String: Any] else { return }
-//                var post = Post(user: user, dictionary: dict)
-//
-//                post.id = snapshot.key // have to capture post id
-//                self.posts.append(post)
-//            })
-//
-//            self.collectionView.reloadData()
-//        }) { (err) in
-//            print("Failed to paginate for posts: ", err)
-//        }
     }
     
     override var prefersStatusBarHidden: Bool {
@@ -342,8 +309,15 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if(indexPath.item == 0 || ((Auth.auth().currentUser?.uid) == userId)) {
             guard let id = posts[indexPath.item].id else { return }
+            guard var viewsInt = Int(posts[indexPath.item].views ?? "0") else { return }
+            guard let uid = Auth.auth().currentUser?.uid else { return }
+            
             let username = posts[indexPath.item].user.username
             let timestamp = posts[indexPath.item].creationDate
+            
+            if posts[indexPath.item].hasViewed == false {
+                viewsInt += 1
+            }
             
             let containerView = PostViewController()
             containerView.previewImageView.loadImage(urlString: posts[indexPath.item].imageUrl)
@@ -355,11 +329,29 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
             attributedText.append(NSAttributedString(string: timestamp.timeAgoDisplay(userDate: false), attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-Regular", size: 14), NSAttributedString.Key.foregroundColor: UIColor.white]))
         
             containerView.usernameAndTimestamp.attributedText = attributedText
+            containerView.viewCount.text = String(viewsInt)
             
             let navController = UINavigationController(rootViewController: containerView)
             navController.modalPresentationStyle = .fullScreen
             self.present(navController, animated:true, completion: nil)
+            
+            let values = [uid: 1]
+            
+            Database.database().reference().child("views").child(id).updateChildValues(values) { (err, ref) in
+                if let err = err {
+                    print("Failed to like post: ", err)
+                    return
+                }
+
+                if self.posts[indexPath.item].hasViewed == false {
+                    self.posts[indexPath.item].views = String(viewsInt)
+                    self.posts[indexPath.item].hasViewed = true
+
+                    self.collectionView.reloadItems(at: [indexPath])
+                }
+
+                print("Successfully liked post!")
+            }
         }
     }
 }
-

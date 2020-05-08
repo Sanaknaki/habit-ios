@@ -103,7 +103,7 @@ class LoginViewController: UIViewController {
         guard let email = emailTextField.text else { return }
         guard let password = passwordTextField.text else { return }
         
-        Auth.auth().signIn(withEmail: email, password: password) { (user: AuthDataResult?, err: Error?) in
+        Auth.auth().signIn(withEmail: email.lowercased(), password: password) { (user: AuthDataResult?, err: Error?) in
             if let err = err {
                 print("Failed to perform login : ", err)
                 self.errorMessageLabel.attributedText = NSMutableAttributedString(string: err.localizedDescription, attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-Regular", size: 14), NSAttributedString.Key.foregroundColor: UIColor.mainRed()])
