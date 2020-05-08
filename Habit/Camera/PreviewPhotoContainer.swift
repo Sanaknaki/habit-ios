@@ -27,6 +27,11 @@ class PreviewPhotoContainer: UIView {
         
         btn.addTarget(self, action: #selector(handleCancel), for: .touchUpInside)
         
+        btn.layer.shadowColor = UIColor.black.cgColor
+        btn.layer.shadowOpacity = 1
+        btn.layer.shadowOffset = .zero
+        btn.layer.shadowRadius = 1
+        
         return btn
     }()
     
@@ -40,6 +45,25 @@ class PreviewPhotoContainer: UIView {
         btn.setImage(#imageLiteral(resourceName: "save").withRenderingMode(.alwaysOriginal), for: .normal)
         
         btn.addTarget(self, action: #selector(handleSave), for: .touchUpInside) 
+        
+        btn.layer.shadowColor = UIColor.black.cgColor
+        btn.layer.shadowOpacity = 1
+        btn.layer.shadowOffset = .zero
+        btn.layer.shadowRadius = 1
+        
+        return btn
+    }()
+    
+    let alreadyPostedButton: UIButton = {
+        let btn = UIButton()
+        
+        btn.backgroundColor = .none
+        btn.layer.cornerRadius = 20
+        
+        btn.setTitle("YOU ALREADY POSTED TODAY", for: .normal)
+        btn.titleLabel?.font = UIFont(name: "AvenirNext-DemiBold", size: 15)
+        btn.setTitleColor(.mainRed(), for: .normal)
+        btn.titleEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         
         return btn
     }()
@@ -55,10 +79,17 @@ class PreviewPhotoContainer: UIView {
         btn.setTitle("POST", for: .normal)
         btn.titleLabel?.font = UIFont(name: "AvenirNext-DemiBold", size: 14)
         btn.setTitleColor(.white, for: .normal)
+
+        btn.layer.shadowColor = UIColor.black.cgColor
+        btn.layer.shadowOpacity = 1
+        btn.layer.shadowOffset = .zero
+        btn.layer.shadowRadius = 1
         
+        btn.titleEdgeInsets = UIEdgeInsets(top: 10, left: 5, bottom: 5, right: 10)
         
         btn.addTarget(self, action: #selector(handlePost), for: .touchUpInside)
-       return btn
+        
+        return btn
     }()
     
     static let updateFeedNotificationName = NSNotification.Name(rawValue: "UpdateFeed")
@@ -215,13 +246,36 @@ class PreviewPhotoContainer: UIView {
         
         addSubview(cancelButton)
         cancelButton.anchor(top: topAnchor, left: nil, bottom: nil, right: rightAnchor, paddingTop: 36, paddingLeft: 0, paddingBottom: 0, paddingRight: 36, width: 20, height: 20)
-            
-        addSubview(postButton)
-        postButton.anchor(top: nil, left: nil, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 36, paddingRight: 24, width: 150, height: 40)
-        
+                
         addSubview(saveButton)
-        saveButton.anchor(top: nil, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 24, paddingBottom: 0, paddingRight: 0, width: 25, height: 25)
-        saveButton.centerYAnchor.constraint(equalTo: postButton.centerYAnchor).isActive = true
+        saveButton.anchor(top: nil, left: leftAnchor, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 36, paddingBottom: 0, paddingRight: 0, width: 25, height: 25)
+        saveButton.centerYAnchor.constraint(equalTo: cancelButton.centerYAnchor).isActive = true
+        
+        handleShowingButton()
+    }
+    
+    fileprivate func handleShowingButton() {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let calendar = Calendar.current
+        
+        let ref = Database.database().reference().child("posts").child(uid).queryLimited(toLast: 1)
+        
+        ref.observe(.value) { (snapshot) in
+            let dict = snapshot.value as? [String : Any]
+            let dictValues = dict?.first?.value as? [String : Any]
+
+            let dateFormatted = Date(timeIntervalSince1970: dictValues?["creationDate"] as? Double ?? 0)
+            
+            if((calendar.isDateInToday(dateFormatted))) {
+                self.addSubview(self.alreadyPostedButton)
+                self.alreadyPostedButton.anchor(top: nil, left: self.leftAnchor, bottom: self.bottomAnchor, right: self.rightAnchor, paddingTop: 0, paddingLeft: 50, paddingBottom: 36, paddingRight: 50, width: 0, height: 60)
+                self.alreadyPostedButton.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+            } else {
+                self.addSubview(self.postButton)
+                self.postButton.anchor(top: nil, left: self.leftAnchor, bottom: self.bottomAnchor, right: self.rightAnchor, paddingTop: 0, paddingLeft: 50, paddingBottom: 36, paddingRight: 50, width: 0, height: 60)
+                self.postButton.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+            }
+        }
     }
     
     required init?(coder: NSCoder) {

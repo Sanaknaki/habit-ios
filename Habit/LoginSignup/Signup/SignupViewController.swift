@@ -171,8 +171,8 @@ class SignupViewController: UIViewController, UITextFieldDelegate {
         if(usernameText.contains(" ")) {
             self.errorMessageLabel.attributedText = NSMutableAttributedString(string: "No spaces in username!", attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-Regular", size: 14), NSAttributedString.Key.foregroundColor: UIColor.mainRed()])
             self.errorMessageLabel.isHidden = false
-        } else if (usernameText.count > 24) {
-            self.errorMessageLabel.attributedText = NSMutableAttributedString(string: "Username must be less than 24 characters!", attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-Regular", size: 14), NSAttributedString.Key.foregroundColor: UIColor.mainRed()])
+        } else if (usernameText.count > 24 || usernameText.count < 3) {
+            self.errorMessageLabel.attributedText = NSMutableAttributedString(string: "Username must be between 3 and 24 characters!", attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-Regular", size: 14), NSAttributedString.Key.foregroundColor: UIColor.mainRed()])
             self.errorMessageLabel.isHidden = false
         } else if(passwordText != retypePasswordText) {
             self.errorMessageLabel.attributedText = NSMutableAttributedString(string: "Passwords do not match!", attributes: [NSAttributedString.Key.font: UIFont(name: "AvenirNext-Regular", size: 14), NSAttributedString.Key.foregroundColor: UIColor.mainRed()])

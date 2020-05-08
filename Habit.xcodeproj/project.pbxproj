@@ -23,6 +23,7 @@
 		234AAFF324533539009400C0 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234AAFF224533539009400C0 /* SearchViewController.swift */; };
 		234AAFF524533597009400C0 /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234AAFF424533597009400C0 /* SearchResultCell.swift */; };
 		234AAFFB245635AF009400C0 /* LoginOrSignUpScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234AAFFA245635AF009400C0 /* LoginOrSignUpScreen.swift */; };
+		235BF6FD246621AC007D07D0 /* DeleteInputTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235BF6FC246621AC007D07D0 /* DeleteInputTextField.swift */; };
 		23DF724D2442C1DE0050A7D3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DF724C2442C1DE0050A7D3 /* AppDelegate.swift */; };
 		23DF724F2442C1DE0050A7D3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DF724E2442C1DE0050A7D3 /* SceneDelegate.swift */; };
 		23DF72512442C1DE0050A7D3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DF72502442C1DE0050A7D3 /* ViewController.swift */; };
@@ -63,6 +64,7 @@
 		234AAFF224533539009400C0 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		234AAFF424533597009400C0 /* SearchResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
 		234AAFFA245635AF009400C0 /* LoginOrSignUpScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginOrSignUpScreen.swift; sourceTree = "<group>"; };
+		235BF6FC246621AC007D07D0 /* DeleteInputTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteInputTextField.swift; sourceTree = "<group>"; };
 		23DF72492442C1DE0050A7D3 /* Habit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Habit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		23DF724C2442C1DE0050A7D3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		23DF724E2442C1DE0050A7D3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -216,6 +218,7 @@
 				2332F6842450A3C200BCBE1B /* FirebaseExtensions.swift */,
 				23DF7285244634EC0050A7D3 /* LoginSignUpInputTextField.swift */,
 				2332F6862450A60800BCBE1B /* CustomImageView.swift */,
+				235BF6FC246621AC007D07D0 /* DeleteInputTextField.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -405,6 +408,7 @@
 				23DF72512442C1DE0050A7D3 /* ViewController.swift in Sources */,
 				23DF72662443DF5D0050A7D3 /* Extensions.swift in Sources */,
 				2332F68A2450B61000BCBE1B /* PostViewController.swift in Sources */,
+				235BF6FD246621AC007D07D0 /* DeleteInputTextField.swift in Sources */,
 				23DF72792444BED80050A7D3 /* SignupViewController.swift in Sources */,
 				23DF724D2442C1DE0050A7D3 /* AppDelegate.swift in Sources */,
 				234AAFF524533597009400C0 /* SearchResultCell.swift in Sources */,

@@ -42,17 +42,12 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
         let calendar = Calendar.current
     
         query.observeSingleEvent(of: .value) { (snapshot) in
-            guard var dicts = snapshot.value as? [String: Any] else { return }
+            guard let dicts = snapshot.value as? [String: Any] else { return }
             guard let dictValues = dicts.first?.value as? [String : Any] else { return }
-            
-            print("####")
-            print(snapshot.childrenCount)
-            print("####")
             
             let dateFormatted = Date(timeIntervalSince1970: dictValues["creationDate"] as? Double ?? 0)
             
             if((!calendar.isDateInYesterday(dateFormatted) && !calendar.isDateInToday(dateFormatted)) && snapshot.childrenCount > 0) {
-                print("GAME OVER!")
                 DispatchQueue.main.async {
                     let gameOverViewController = GameOverViewController()
                     let navController = UINavigationController(rootViewController: gameOverViewController)

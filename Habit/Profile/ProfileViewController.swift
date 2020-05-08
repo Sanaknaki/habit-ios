@@ -24,6 +24,16 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
         return button
     }()
     
+    let noPostsLabel: UILabel = {
+        let label = UILabel()
+        
+        label.text = "No posts."
+        label.textColor = .mainGray()
+        label.font = UIFont(name: "AvenirNext-Regular", size: 14)
+        
+        return label
+    }()
+    
     @objc func handleFollowFollowing() {
         guard let currentLoggedInUserId = Auth.auth().currentUser?.uid else { return } // You
         guard let userId = userId else { return } // User you about to follow/unfollow
@@ -126,9 +136,23 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
        
         setupNavigationBar()
         
-        collectionView.alwaysBounceVertical = true
-        
         fetchUser()
+        
+        loadNoPosts()
+    }
+    
+    fileprivate func loadNoPosts() {
+        if(posts.count == 0) {
+            view.addSubview(noPostsLabel)
+            noPostsLabel.anchor(top: nil, left: nil, bottom: nil, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, width: 0, height: 0)
+            noPostsLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+            noPostsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+            collectionView.alwaysBounceVertical = false
+            noPostsLabel.isHidden = false
+        } else {
+            collectionView.alwaysBounceVertical = true
+            noPostsLabel.isHidden = true
+        }
     }
     
     // To be called in fetchUser() and header
@@ -285,11 +309,12 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
                     }
                     
                     self.posts.append(post)
-                    
                     // Show earliest posts first
                     self.posts.sort(by: { (p1, p2) -> Bool in
                         return p1.creationDate.compare(p2.creationDate) == .orderedDescending
                     })
+                    
+                    self.loadNoPosts()
                     
                     self.collectionView?.reloadData()
                     

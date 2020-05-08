@@ -51,12 +51,6 @@ class TimelineViewController: UICollectionViewController, UICollectionViewDelega
         fetchAllPosts()
         
         showNoPosts()
-        
-//        if(posts.count == 0) {
-//            collectionView.alwaysBounceVertical = false
-//        } else {
-//            collectionView.alwaysBounceVertical = true
-//        }
     }
     
     // Auto update when we upload a new post
@@ -67,9 +61,6 @@ class TimelineViewController: UICollectionViewController, UICollectionViewDelega
         
         // Reset the posts and then you will refetch with new following info and such
         posts.removeAll()
-        
-        noPostsIcon.isHidden = true
-        noPostsMessage.isHidden = true
         
         fetchAllPosts()
     }
@@ -156,12 +147,13 @@ class TimelineViewController: UICollectionViewController, UICollectionViewDelega
     fileprivate func fetchPostsWithUser(user: User) {
         let ref = Database.database().reference().child("posts").child(user.uid)
         
-        ref.observeSingleEvent(of: .value, with: { (snapshot) in
+        
+        ref.queryLimited(toLast: 1).observeSingleEvent(of: .value, with: { (snapshot) in
             
             // Stop the refresh
             self.collectionView.refreshControl?.endRefreshing()
-            
-            guard let dicts = snapshot.value as? [String: Any] else { return }
+                        
+            guard var dicts = snapshot.value as? [String: Any] else { return }
             
             // Value would be the attributes
             dicts.forEach({ (key: String, value: Any) in

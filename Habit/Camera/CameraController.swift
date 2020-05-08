@@ -14,17 +14,21 @@ import AVFoundation
  */
 
 class CameraController: UIViewController, AVCapturePhotoCaptureDelegate, UIViewControllerTransitioningDelegate {
-    
     let dismissButton: UIButton = {
         let btn = UIButton(type: .system)
         
-        btn.setImage(#imageLiteral(resourceName: "exit").withRenderingMode(.alwaysOriginal), for: .normal)
+        btn.setImage(#imageLiteral(resourceName: "back-white").withRenderingMode(.alwaysOriginal), for: .normal)
         
         btn.addTarget(self, action: #selector(handleDismiss), for: .touchUpInside)
         
+        btn.layer.shadowColor = UIColor.black.cgColor
+        btn.layer.shadowOpacity = 1
+        btn.layer.shadowOffset = .zero
+        btn.layer.shadowRadius = 1
+        
         return btn
     }()
-    
+        
     @objc func handleDismiss() { dismiss(animated: true, completion: nil) }
     
     let capturePhotoButton: UIButton = {
@@ -32,6 +36,11 @@ class CameraController: UIViewController, AVCapturePhotoCaptureDelegate, UIViewC
         
         btn.setImage(#imageLiteral(resourceName: "capture-photo").withRenderingMode(.alwaysOriginal), for: .normal)
         btn.addTarget(self, action: #selector(handleCapturePhoto), for: .touchUpInside)
+        
+        btn.layer.shadowColor = UIColor.black.cgColor
+        btn.layer.shadowOpacity = 1
+        btn.layer.shadowOffset = .zero
+        btn.layer.shadowRadius = 1
         
         return btn
     }()
@@ -97,7 +106,7 @@ class CameraController: UIViewController, AVCapturePhotoCaptureDelegate, UIViewC
         capturePhotoButton.anchor(top: nil, left: nil, bottom: view.bottomAnchor, right: nil, paddingTop: 0, paddingLeft: 0, paddingBottom: 36, paddingRight: 0, width: 80, height: 80)
         capturePhotoButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
-        dismissButton.anchor(top: view.topAnchor, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: 60, paddingLeft: 0, paddingBottom: 0, paddingRight: 24, width: 20, height: 20)
+        dismissButton.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: nil, right: nil, paddingTop: 60, paddingLeft: 24, paddingBottom: 0, paddingRight: 0, width: 20, height: 20)
     }
     
     let output = AVCapturePhotoOutput()
@@ -154,5 +163,6 @@ class CameraController: UIViewController, AVCapturePhotoCaptureDelegate, UIViewC
             }
         }
     }
+    
 }
 
