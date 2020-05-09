@@ -24,9 +24,8 @@ What if we took the concept of Snapchat/Instagram stories, and made it so you **
 and if you don't, your account gets deleted.
 
 ## Sketch File
-```example
-Available in repo!
-```
+Available <a href="https://github.com/Sanaknaki/habit-ios/tree/master/Sketch">here</a> in the repo!
+
 
 ## Installation (Ask in advance!)
 ```example
