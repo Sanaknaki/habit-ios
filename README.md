@@ -17,12 +17,6 @@ and if you don't, your account gets deleted.
   <img src="https://imgur.com/E2iKcAu.png" />
 </p>
 
-## Conceptualization
-Given all this extra time thanks to the quarantine, I was inspired to learn =about developing iOS apps.
-So why not try and create a social network? What would make a fun social network? 
-What if we took the concept of Snapchat/Instagram stories, and made it so you **have** to and can **only** post once a day,
-and if you don't, your account gets deleted.
-
 ## Sketch File
 Available <a href="https://github.com/Sanaknaki/habit-ios/tree/master/Sketch">here</a> in the repo!
 
