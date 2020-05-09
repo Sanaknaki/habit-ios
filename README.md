@@ -6,7 +6,7 @@
 Make "being in the moment" a habit of yours.
 
 ## Conceptualization
-Given all this extra time thanks to the quarantine, I was inspired to learn =about developing iOS apps.
+Given all this extra time thanks to the quarantine, I was inspired to learn about developing iOS apps.
 So why not try and create a social network? What would make a fun social network? 
 What if we took the concept of Snapchat/Instagram stories, and made it so you **have** to and can **only** post once a day,
 and if you don't, your account gets deleted.
