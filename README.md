@@ -3,7 +3,8 @@
 </p>
 
 # Habit
-Make "being in the moment" a habit of yours.
+Make "being in the moment" a habit of yours. <br/>
+Read the Medium article <a href="https://medium.com/@sanaknaki.ali/habit-a-limited-social-network-ad7fa3d44930">here</a>!
 
 ## Conceptualization
 Given all this extra time thanks to the quarantine, I was inspired to learn about developing iOS apps.
